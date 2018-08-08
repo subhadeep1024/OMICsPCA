@@ -1,2 +1,3 @@
-# OMICsPCA
-An R package to integrate and analyse multiple heterogeneous assays
+# OMICsPCA: Quantitative integration and analysis of heterogeneous OMIC assays
+
+OMICsPCA is a pipeline designed to  integrate and analyze heterogeneous  multiple assays, factors, data types or modalities (e.g. ChIP-seq, RNA-seq) from multiple sources ( e.g. multiple cell lines, time points). It guides the user through various analyses and visualization to decide similar variables (e.g.Cell lines), followed by a selection of assays that should be included in or excluded out from the integration process. The selected assays can be further integrated and  analysed and the data points or individuals (e.g. genes, TSSs, exons) may be clustered on the basis of the integrated data coming from single or multiple assays.
