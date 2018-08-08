@@ -1,0 +1,36 @@
+cluster_boxplot <- function(name, Assay, clusterobject,
+clustercolumn, choice = NULL){
+
+    specificcluster <- subassay <- clusterdata <- NULL
+
+    clusternumber <- levels(as.factor(clustered_data[, ncol(clustered_data)]))
+    clusternumber <- as.numeric(clusternumber)
+
+    for(i in clusternumber){
+specificcluster[[i]] = clusterobject[clusterobject[,clustercolumn] == i,]
+    }
+
+    for(j in clusternumber){
+assay = eval(parse(text = paste0(name,"@InputAssays$",Assay)))
+subassay[[j]] = assay[rownames(assay) %in% rownames(
+specificcluster[[j]]),]
+    }
+
+    for(k in clusternumber){
+subassay[[k]] = cbind(
+subassay[[k]], rep (k,nrow(subassay[[k]])))
+    }
+
+    for(l in clusternumber){
+clusterdata <- rbind(clusterdata, subassay[[l]])
+    }
+
+    names(clusterdata)[ncol(clusterdata)] <- "cluster"
+
+    d <- melt(clusterdata, id.vars  = "cluster")
+
+    p <- ggplot(d,aes(x=variable, y=value))+geom_boxplot(
+aes(fill = variable))+ facet_wrap(~cluster, scales="free")
+
+    return(p)
+}
