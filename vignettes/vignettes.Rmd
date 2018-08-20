@@ -1,5 +1,5 @@
 ---
-title: 'OMICsPCA: Quantitative integration and analysis of heterogeneous OMIC assays'
+title: 'OMICsPCA: An R package for quantitative integration and analysis of multiple omics assays from heterogeneous samples'
 author: "Subhadeep Das"
 date: "`r Sys.Date()`"
 output:
@@ -12,14 +12,17 @@ output:
     theme: lumen
     toc: yes
     toc_depth: 6
-vignette: |
-  %\VignetteEncoding{UTF-8} %\VignetteIndexEntry{OMICsPCA} %\VignetteEngine{knitr::rmarkdown}
+vignette: >
+  %\VignetteEncoding{UTF-8} 
+  %\VignetteIndexEntry{OMICsPCA} 
+  %\VignetteEngine{knitr::rmarkdown}
 ---
 
 <style type="text/css">
 
 body, td {
    font-size: 20px;
+   text-align: justify
 }
 code.r{
   font-size: 15px;
@@ -62,45 +65,126 @@ knitr::opts_chunk$set(fig.pos = 'H')
 
 
 # Introduction
+\  
 
-OMICsPCA is a pipeline designed to  integrate and analyze heterogeneous 
-multiple assays, factors, data types or modalities (e.g. ChIP-seq, RNA-seq)
-from multiple sources ( e.g. multiple cell lines, time points). It guides
-the user through various analyses to decide similar variables (e.g.Cell lines),
-followed by a selection of assays that should be included in or excluded out
-from the integration process. The selected assays can be further integrated and 
-analysed and the data points or individuals (e.g. genes, TSSs, exons) may be
-clustered on the basis of the integrated data coming from single or multiple
-assays. 
+## Background:
 
-Integration of experimental data from multiple sources helps us to understand
-the origin of variation among the sources being integrated. Moreover,
-if the data from the same sources are not available, it is not possible to compare
-such experiments on the same data point. For example, we want to cluster similar 
-genes on the basis of CpG methylation and H3k4me3 histone modification, and we 
-have the following experiments:
+OMICsPCA is a statistical framework designed to integrate and
+analyze multiple types of heterogeneous assays, factors, data 
+types or modalities (e.g. ChIP-seq, RNA-seq) from different 
+samples or sources ( e.g. multiple cell lines, time points etc.). 
+Biological processes in eukaryotes are complicated molecular
+interactions, spanned over multiple layers of regulation.
+In order to understand the collective effects of the 
+interactions of biological processes, they should be studied 
+parallelly. High throughput sequencing has enabled genome-wide 
+assays across several disease conditions, cell types, time points
+etc. at a much faster rate.  On the other hand, replicated
+experiments on diverse samples (e.g. various cell lines) help
+us to understand the origin of variation (e.g. the genes, TSSs,
+exons etc) observed between the samples.  Therefore,
+integrative multi-omics studies on heterogeneous samples are
+gaining their importance every day. As a consequence, a huge
+number of datasets are being produced and stored in public 
+databases, allowing researchers to perform integrative analysis
+of multiple data modalities.
 
-1) CpG methylation on 5 Cell lines A, B, C, D, and E
-2) H3k4me3 histone modification on 10 Cell lines A,D,E,I,K,Q,P,Z,W and G.
+Unfortunately, most of such studies are limited to very few 
+numbers of samples(e.g. cell lines) or data modalities (e.g. 
+various ChIP-seq assays) due to the huge cost, ethical issues,
+and scarcity of samples associated with the entire experimental 
+process. And, most of the data integration methods rely on the 
+condition of homogeneity of samples, i.e. the samples
+corresponding to each modality should be the same. As a result,
+integrative analysis on publicly available data sets is very
+much rare and extremely restricted to very few numbers of samples
+or modalities (or both). 
+\  
 
-Here, we can not do the intended clustering since the Cell lines and the number of
-cell lines are different in the two experiments. But if CpG of 5 cells are
-integrated into 1 common metric and H3k4me3 for 10 Cells are integrated into
-1 common metric, then it is possible to cluster the genes on the basis of this 2
-matrices.
+## Illustration of the problem with example
 
-For such similar cases, OMICsPCA is a good tool for data integration and analysis. 
-It can integrate the cell lines into various linear combinations using
-PCA and identify the most similar cell types on the basis of an assay and thus
-can overcome **data insufficiency**.
+Let’s illustrate the problem with an example. Suppose our
+objective is to decipher the collective effect of CpG 
+methylation and H3k4me3 histone modification on the gene
+expression, followed by clustering of the similar genes on 
+the basis of the consolidated effect of these 2 data modalities.
+Consider we have the following datasets:
+\  
 
-OMICsPCA can be used in cluster genes, TSSs, exons on the basis of multiple types of
-heterogeneous experimental or theoretical information or vice-versa. Such
-kind of multivariate analyses is useful in identification of similar cell lines
-or assays prior to the integration process. In this vignette, we show an example of
-the entire analysis process done on human transcription start sites.
+1)	CpG methylation on 5 Cell lines A, B, C, D, and E
+\  
 
+2)	H3k4me3 histone modification on 10 Cell lines
+A,D,E,I,K,Q,P,Z,W and G.
 
+Here, we can not calculate the collective effect directly,
+since the cell lines and the number of cell lines is different
+in the two experiments. 
+\  
+
+## Previous approaches/frameworks towards multi-omics data integration
+
+Several data integration frameworks have been designed over
+the past few years to overcome such difficulty. For example, 
+Huang (1) proposed a regression-based joint modeling approach
+to integrate SNPs, DNA methylation, and gene expression;
+He et al. (2)developed a pattern matching method to integrated 
+eQTL and GWAS data; Xiong et al. (3) developed a statistical
+framework to associate SNP and gene expression information etc.
+All such applications are designed to perform in a supervised 
+manner, i.e. the integrated data modalities must be associated 
+with labelled classes (e.g. disease and control class; pathway 
+1 and pathway 2 etc.). Such constraints impose a limitation on 
+the algorithms to be used in varieties of applications (e.g., 
+can’t be used in clustering).  In contrast, Ha, et al. (4)
+developed an unsupervised Gaussian process model for qualitative
+(logical combination of binary values, e.g. 0/1 or TRUE/FALSE) 
+integration of a large number of epigenetic factors and applied 
+it to describe cell lineage-specific gene regulatory programs. 
+Although overcomes the limitation of class association to some 
+extent, this process is only sufficient for the applications where
+qualitative integration is sufficient.
+
+As mentioned earlier, there is another important application of
+data integration, which is associated with the disentanglement
+of the source of variation. A common strategy used in such 
+studies is to perform a large number of association tests
+between the features and the data modalities (5, 6). Alternatively, 
+kernel or graph-based methods are also considered as methods of
+integration and the integrated data is then used to build common
+similarity networks between samples (7, 8). Although effective 
+in accomplishing specific tasks, such approaches lack proper 
+interpretability (9) and do not suffice to explain many other
+relevant queries applicable to integrated omics data. Such 
+queries include identification of variably controlled genes, 
+genes sharing similar epigenomic state across various samples
+and many more. 
+\  
+
+## OMICsPCA
+
+OMICsPCA is a multipurpose tool designed to overcome the difficulties
+associated with both the applications of data integration. It is 
+designed to identify the source of variation among both the 
+samples/variables (the columns of a table, e.g. cell lines, 
+patients etc.) and individuals (the rows of a table, e.g. genes,
+exons etc.) associated with each data modality (i.e. the tables, 
+e.g. CpG_methylation, ChIP-seq on a protein etc.). It guides the
+user through various analyses to decide on similar samples/variables 
+(e.g.Cell lines). This is followed by selecting the data modalities
+(e.g. the assays) that can be included or excluded leading to data 
+integration. The selected data modalities can be further integrated 
+and analyzed and the data points or individuals (e.g. genes, TSSs, 
+exons) may be clustered on the basis of the integrated data coming 
+from single or multiple modalities.
+
+In short, OMICsPCA can be used in clustering genes, TSSs, exons 
+on the basis of multiple types of heterogeneous experimental or
+theoretical data or vice-versa. Such kind of multivariate analyses 
+is useful in identification of similar cell lines or assays prior 
+to the integration process. In this vignette, we show an example 
+of the entire analysis process done on human transcription start
+sites. 
 \  
 
 Here is a flowchart of the overall functionality of the functions of OMICsPCA
@@ -112,14 +196,18 @@ fc <- system.file("images/OMICsPCA.pdf", package = "OMICsPCAdata")
 image <- image_read_pdf(fc)
 print(image)
 ```
+\  
+
+\  
 
 # DATA
+\  
 
-In the following example we run our analyses on a subset of 12 epigenetic Assays
+In the following example, we run our analyses on a subset of 12 epigenetic Assays
 and one expression assay. All the data are publicly available at **ENCODE** and
-**ROADMAP epigenomicsproject** portal. The data is stored in the additional 
+**ROADMAP epigenomics project** portal. The data is stored in the additional 
 package **OMICsPCAdata()** and summarised below:
-
+\  
 
 ```{r echo = FALSE}
 library(OMICsPCAdata)
@@ -233,27 +321,39 @@ column_spec(5, border_right = FALSE, width = "5em")
 ```
 \  
 
+\  
+
 # Example
+\  
+In this section we demonstrate the functionality of OMICsOCA with an example.
+We divided the GENCODE annotated TSSs into 4 groups on the basis of their 
+on-off state in 31 cell lines and mapped ChIP-seq, DNA methylation, DNase I
+hypersensitivity data with them in order to study the consolidated effect of
+these data modalities on their expression. Before calculating the
+consolidated effect, we filtered out the outlier samples and identified the data
+modalities that show discriminatory density pattern among the expression groups.
+Finally, we clustered the similar TSSs together on the basis of the consolidated
+effect of discriminatory factors.
 
 ## Preparation of data
 
-
-OMICsPCA has an inbuild function **prepareDataset()** that merges the factors
+OMICsPCA has an inbuilt function **prepareDataset()** that merges the factors
 (e.g. CAGE, H3k4me1 etc) corresponding to each annotation (eg. gene, TSS, exon
 etc.) and from each cell lines into a dataframe and returns this dataframe. 
 The rows of this returned dataframe contain the annotations and each column
-contain the values of a factors of a cell.
+contain the values corresponding to a factor specific to a particular cell
+type.
 
 The arguments taken by this function is described below:
 
 1. **factdir** : full path of the directory containing files corresponding to
 various cell lines in `.bed` format. This directory should contain only the
-files of same assay (e.g. H3k9ac).
+files of the same assay (e.g. H3k9ac).
 
 2. **annofile** : full path of the file containing the annotation file
 (e.g exons, TSSs, genes etc) in `.bed` format
 
-3. **annolist** : name of full set or subset of the entries in annotation
+3. **annolist** : name of full set or subset of the entries in the annotation
 file.
 
 The `.bed` files should have at least 4 columns. The first column is the
@@ -261,6 +361,17 @@ chromosome name, the second and third is the start and end of the feature
 (e.g. a gene or a ChIP-seq peak etc) accordingly and the fourth column 
 contains the value (e.g. expression of a gene, ChIP-seq intensity of a peak
 or name of a gene etc.). Some examples of `.bed` files are shown below : 
+
+OMICsPCA has an inbuilt function **prepareDataset()** that aggregates
+the samples (e.g. cell lines) of each data modality (e.g. a histone 
+modification ChIP-seq assay) corresponding to each feature of the genome
+(notably gene, TSS, exon etc.) and returns a dataframe.
+
+The rows of this dataframe object contain the features (e.g. genes)
+and each column contains the values corresponding to a sample
+(e.g. Cell line).
+
+Some examples of the input file formats are given below:
 \  
 
 ```{r echo = FALSE}
@@ -286,7 +397,26 @@ header=FALSE, sep = "\t")
 names(TSS_list)[1] <- c("GENCODE TSS ID") 
 
 ```
+\  
 
+The arguments taken by this function is described below:
+
+1.	`factdir`: full path of the directory containing files corresponding
+to various cell lines in .bed format. This directory should contain only
+the files of the same assay (modality) (e.g. H3k9ac) from different
+samples (e.g. cell lines).
+
+2.	`annofile`: full path of the file containing the annotation file
+(e.g exons, TSSs, genes etc) in .bed format. 
+
+3.	`annolist`: name of full set or subset of the entries in the 
+annotation file. The **.bed** files should have at least 4 columns.
+The first column is the chromosome name, the second and third is
+the start and end position of the feature (e.g. a gene or a
+ChIP-seq peak etc). The fourth column contains the value of the
+described feature (e.g. expression of a gene, the ChIP-seq
+intensity of a peak or name of a gene etc.).
+\  
 
 ```{r eval = FALSE, echo = FALSE, results='asis'}
 # for pdf
@@ -347,13 +477,12 @@ caption = "names of the human TSSs of assembly hg19 (`annolist`)",
 align = 'c', col.names = "GENCODE ID") %>% 
 kable_styling("bordered",full_width = TRUE, position = "left")
 ```
-
 \  
 
-Here we show the use of prpareDataset() by integrating H2az ChIP-seq peaks from
-5 cell lines into a data frame named "H2az". The example data sets are packaged
-inside the `OMICsPCAdata` package
-
+Here we show the use of **prpareDataset()** by integrating H2az ChIP-seq 
+peaks from 5 cell lines into a data frame named "H2az". The example 
+data sets are packaged inside the `OMICsPCAdata` package
+\  
 
 ```{r echo = TRUE}
 anno <- system.file("extdata/annotation/TSS_groups.bed",
@@ -367,13 +496,13 @@ package = "OMICsPCAdata")
 
 list.files(path = fact)
 ```
+\  
 
-
-prepareDataset() will combine these 5 cell lines into a dataframe (name
-should be supplied through `factname`). The rows of the dataframe will
-correspond to the entries in the variable named `list`  and the columns
-will correspond to the 5 cell lines shown above.
-
+prepareDataset() will combine these 5 cell lines into a dataframe.
+The rows of the dataframe will correspond to the entries in file
+entered through the variable named `list`  and the columns will
+correspond to the 5 cell lines shown above.
+\  
 
 ```{r eval = FALSE}
 
@@ -388,23 +517,23 @@ head(H2az_all_cells, n = 4)
 ## Reading data 
 
 OMICsPCA is designed to read various assays done on various cell lines
-into an user defined S4 variale and then run various analyses on this
+into an user-defined S4 variable and then run various analyses on this
 object. The class of this S4 object is predefined as **OMICS** and a 
-contructor function in this name is provided to create an object of 
-class **OMICS**. For ease of analysis we compiled some preloaded data 
+contsructor function in this name is provided to create an object of 
+class **OMICS**. For ease of analysis, we compiled some preloaded data 
 similar to the output of prepareData() into the supporting package
 OMICsPCAdata().
 
 The data is read to the **InputAssays** slot of the "OMICS" object
-by the function InputOMICs. It can read object diresctly from the
-environment or from file.
-
+by the function InputOMICs. It can read object directly from the
+environment or from a file.
+\  
 
 ### Reading from objects
 
 If the objects are present in the global environment, we can
 directly read them.
-
+\  
 
 ```{r echo = TRUE}
 library(OMICsPCAdata)
@@ -435,16 +564,15 @@ InputOMICs(name = "OMICsdata", Assays = Assays)
 
 
 ```
-
 \  
 
 ### Reading from files
 
-To read from file we need to pass to additional argument `path` and
-`typeisfile`. By default `typeisfile` is set to FALSE and needs to be
-changed to TRUE in order to read from file. `path` should contain the
-path to the directory containing files to be read.
-
+To read from a file we need to pass an additional argument path and
+set `typeisfile` to TRUE. By default, `typeisfile` is set to FALSE .
+The `path` argument should contain the path to the directory
+containing files to be read.
+\  
 
 ```{r eval = TRUE}
 Assays <- c("CAGE_Cell_wise_v2",
@@ -470,12 +598,12 @@ path = path)
 
 ## Subsetting into groups
 
-once the the dataframes corresponding to the Assays/factors are 
-prepared, User may want to divide the entire annotation set into 
-smaller groups. Here we we show an example to divide 154301 GENCODE
-TSS groups into 4 expression groups. The grouping  criteria is based
-on the on/off status (determined from CAGE experiments) of the
-TSSsin 31 cell lines.
+Once the dataframes corresponding to the assays/modalities
+is prepared, the user may want to divide the entire annotation set
+into smaller groups. Here we show an example to divide 154301 GENCODE
+TSS groups into 4 expression groups. The grouping criteria are based
+on the on/off status (determined from CAGE experiments) of the TSSs
+in 31 cell lines.
 
 OMICsPCA has a function **create_group()** to do this task. This
 function takes the following 4 arguments:
@@ -496,7 +624,7 @@ other cases.
 
 6. **grouping_factor** : name of the dataframe on which grouping will
 be done
-
+\  
 
 ```{r echo = TRUE}
 create_group(name = "OMICsdata", group_names = c("WE" ,"RE" ,"NE" ,"IntE"),
@@ -504,19 +632,20 @@ grouping_factor = "CAGE_Cell_wise_v2",
 comparison = c(">=" ,"%in%" ,"==" ,"%in%"),
 condition = c("25" ,"1:5" ,"0" ,"6:24"))
 ```
+\  
 
-
-In the above example the dataframe `CAGE_Cell_wise_v2` is divided 
-into 4 smaller data frames WE, RE, NE and IntE. "WE" contains TSSs 
-expressed in >= 25 cell lines, "RE" represents TSSs expressed in 
+In the above example the dataframe CAGE_Cell_wise_v2 is divided into
+4 smaller data frames e.g; WE, RE, NE and IntE. “WE” contains TSSs
+expressed in >= 25 cell lines, “RE” represents TSSs expressed in
 1 to 5 cell lines and so on.
 
 The CAGE data frame looks like this:
-
+\  
 
 ```{r echo = FALSE}
 data("CAGE_Cell_wise_v2")
 ```
+\  
 
 ```{r eval = FALSE, echo = FALSE, results = 'asis'}
 # for pdf
@@ -534,26 +663,36 @@ position = "center", latex_options = c("repeat_header",
 knitr::kable(CAGE_Cell_wise_v2[1:5,1:5], align = 'c') %>% 
 kable_styling("bordered",full_width = TRUE, position = "center")
 ```
+\  
 
+**NOTE**: Running create_group is mandatory for all downstream
+data analyses. Even if there is no need to subset any assay to
+smaller groups. In such  cases, do the following: 
+\  
 
-**NOTE:** Running **create_group** is mandatory for all downstream
-analyses, even if there is no need to subset any assay to smaller
-groups. In such a case,  choose the following:
+set
+\  
 
-name = name of the "OMICS"" object
-group_names = "all"
-grouping factor = name of any Assay used in "InputOMICs"
-comparison = ">="
-condition = "0"
+name = name of the “OMICS”" object;
+\  
+
+group_names = “all”; 
+\  
+
+grouping factor = name of any Assay used in “InputOMICs”;
+\  
+
+comparison = “>=”;  condition = “0”
+\  
 
 **create_group()** stores the smaller dataframes corresponding to
-the user defined groups  in the `groups` slot of `OMICsdata`.
-
+the user-defined groups  in the `groups` slot of `OMICsdata`.
 
 **create_group()** can also read predefined groups. The predefined groups
-should be supplied as a data frame of single column(containing the
+should be supplied as a data frame of a single column(containing the
 group names) and with row names through the argument `groupinfo` and the
-`predefinedgroups` argument should be set to "TRUE".
+`predefinedgroups` argument should be set to "TRUE". Here is an example:
+\  
 
 ```{r}
 path <- system.file("extdata/groupinfo", package = "OMICsPCAdata")
@@ -566,10 +705,7 @@ head(groupinfo)
 create_group(name = "OMICsdata", predefinedgroups = TRUE,
 groupinfo = groupinfo)
 ```
-
 \  
-\  
-
 
 ## Exploratory data analysis (EDA) on created groups
 
@@ -578,20 +714,22 @@ various Assays/factors(e.g. H2az, H3k9ac etc) on the annotations
 (e.g. TSSs, genes) of various groups (In the above example, the groups
 are created on the basis of on-off state of TSSs in 31 cell lines). 
 OMICsPCA has several functions for EDA.
-
+\  
 
 ### descriptor()
 
 Descriptor works in two modes depending on the value passed through
 the argument `choice`. choice = 1 displays panels of boxplots
-corresponding to the Assay(s) or factor(s) chosen through argument
-`factor`. Each panel shows number of boxplots corresponding to the 
-group(s) passed through argument `groups`. Each boxplot in choice 1 
-represents the disdribution of percentage of cell lines corresponding
-to a group that are overlapped with the selected assay.  
+corresponding to the Assay(s) or factor(s) or modality(ies) chosen
+through argument `factor`. Each panel shows number of boxplots
+corresponding to the  group(s) passed through argument `groups`.
+Each boxplot in choice 1  represents the distribution of 
+percentage of cell lines corresponding to a group that are overlapped 
+with the selected assay.  
 
-**NOTE :** in `groups`, one group name should be put only once.
-**NOTE :** `groups` can handle only the groups created by "create_group()"
+**NOTE :** in `groups`, one group name should be used only once.
+**NOTE :** `groups` can handle only the predefined groups or the groups 
+created by "create_group()"
 
 ```{r}
 descriptor(name = "OMICsdata",
@@ -618,10 +756,10 @@ In `choice` = 2, a value needs to be supplied to the argument
 `choice2group`. This value should be the name of one of the 
 groups created by "create_group()".
 The plot displayed in this mode represents the distribution 
-of percentage of celllines corresponding to a factor/Assay with
-various combination of otherAssays/ factors supplied through
-`factors`.
-
+of percentage of celll ines corresponding to a factor/Assay/modality
+with various combination of other Assays/factors/modalities
+supplied through `factors`.
+\  
 
 ```{r}
 descriptor(name = "OMICsdata",
@@ -696,11 +834,11 @@ groups = "WE", choice = "scatter")
 
 All the correlation scatterplots of TSSs in "WE" looks similar shaped
 except the ones coming from Hepg2. This is an indication that H2az pattern
-on "WE"s are different than other 4 cell lines.
+of the expression group "WE" is different in Hepg2 than other 4 cell lines.
 
 The correlation value between each pair of cell lines may be calculated
 by `choice` = table. The slight difference in Hepg2 is visible here also.
-
+\  
 
 ```{r eval = TRUE, echo = TRUE}
 chart_correlation(name = "OMICsdata", Assay = "H2az_Cell_wise",
@@ -720,7 +858,7 @@ groups = "WE", choice = "hist", bins = 10)
 \  
 
 All the above 3 plots can be plotted in a single plot
-
+\  
 
 ```{r}
 chart_correlation(name = "OMICsdata", Assay = "H2az_Cell_wise",
@@ -730,33 +868,33 @@ groups = "WE", choice = "all")
 
 ## Integration of Multiple Cell lines
 
-If an assay (e.g. ChIP-seq for the histone modification H3k9ac) is
-done on multiple cells/conditions/treatment/time, it might be, 
+If an assay (e.g. ChIP-seq for the histone modification of type H3k9ac)
+is done on multiple cells/conditions/treatment/time, it might be, 
 sometimes, necessary to integrate or combine them, in order to
 understand the source of variation or to calculate a common metric
-to be served as the representative of all variables etc. Such combination 
-may be done by several techniques like Principal Component Analysis
-(PCA) or Factor Analysis (FA). PCAOMICsPCA has a function
-**integrate_variables()** to integrate data from multiple
-cells or conditions using PCA. 
+to be served as the representative of all variables etc. Such a 
+combination may be done by several techniques like Principal
+Component Analysis (PCA) or Factor Analysis (FA). OMICsPCA
+has a function **integrate_variables()** to integrate data
+from multiple cells or conditions using PCA. 
 
 ***integrate_variables()*** takes 3 mandatory inputs:
 
-1. **factor** : name of data frames similar to the ones created by 
+1. **factor**: name of data frames similar to the ones created by 
 ***prepareDataset()***. 
 
 An example of such data frame is given below:
-
+\  
 
 ```{r echo = TRUE}
 head(H3k4me1_Cell_wise[177:179,1:5])
 ```
 \  
 
-2. **name** : a vector containing the names of the groups created by
+2. **name**: a vector containing the names of the groups created by
 **create_groups()** . e.g.
 
-3. **groups** : full set or subset of groups created by
+3. **groups**: full set or subset of groups created by
 ***create_group()***. The group names should be provided as vector string.
 e.g. c("WE" ,"RE")
 
@@ -770,28 +908,27 @@ In this example we supply two more additional arguments **scale.unit = FALSE**
 and **graph = FALSE** 
 
 The combined data is stored in the PCA slot of the "OMICs" object.
-
+\  
 
 ```{r eval = TRUE}
 integrate_variables(Assays = c("H2az_Cell_wise","H3k4me1_Cell_wise",
 "H3k9ac_Cell_wise"), name = "OMICsdata",
 groups = c("WE","RE", "NE", "IntE"), scale.unit = FALSE, graph = FALSE)
 ```
-
 \  
 
-## Analysis of of integrated data
+## Analysis of integrated data
 
 The **analyse_vaiables()** function is designed for a quick 
 analysis and visualization of the data integrated by integrate()
 function. It takes 3  compulsory arguments **1) name**, **2) Assay** 
-and **3) choice** . The type of analysis should be selected through
+and **3) choice**. The type of analysis should be selected through
 the `choice` argument. This function acts as a wrapper around a 
-collection of functions of package "factoextra"and "corrplot" and 
+collection of functions of package "factoextra" and "corrplot" and 
 thus can take additional arguments specific and non-conflicting to 
 such functions. Types of analysis and their corresponding input in
-`choice` is listed below:
-
+`choice` are listed below:
+\  
 
 ```{r echo =FALSE}
 choice_table <- data.frame(choice = 1:6, graphical_output = c(
@@ -864,17 +1001,18 @@ names(choice_table) <-  c("choice", "graphical\noutput","console\noutput",
 
 library(kableExtra)
 ```
-
+\  
 
 **Note:** `PC` argument is mandatory for `choice` 4 and 5.
+(PC = principal component)
 
 **Note:** User may use the functions listed below directly to supply more
-graphical parameters (e.g. `ncp` in choice 1 , i.e. in fviz_eig, to restrict
-the display of number of dimensions or use `select.var` in choice 2 to select
-columns/variables/cell lines satisfying some condition.). use ? followed by
+graphical parameters (e.g. `ncp` in choice 1, i.e. in fviz_eig, to restrict
+the display of the number of dimensions or use `select.var` in choice 2 to select
+columns/variables/cell lines satisfying some condition.). use `?` followed by
 the function name listed in the above table to explore more options available
 for each choice of "analyse_variables()".
-
+\  
 
 ```{r, echo=FALSE, eval = FALSE, results='asis'}
 # for pdf
@@ -901,119 +1039,123 @@ column_spec(4, width = "5em") %>%
 column_spec(5, width = "6em") %>%
 column_spec(6, width = "5em")
 ```
+\  
 
 Here are some examples of different choices:
-
 \  
 
 ### choice = 1 
+
 Barplot of variance explained by each principal component
 (PC) or dimension
-
+\  
 
 ```{r eval = TRUE, echo = TRUE}
 analyse_variables(name = "OMICsdata", Assay = "H2az_Cell_wise", choice = 1,
 title = "variance barplot", addlabels = TRUE)
 ```
 \  
+
 83.3 % of variation is captured by PC1 alone, which indicates that 5 cell lines are
 very similar to one another. However, there may be the influence of huge number of ]
-"NE" (see integrate_variables() step). Therefore this analysis might be worth of doing
+"NE" (see integrate_variables() step). Therefore doing this analysis might be worth
 on each individual expression group.
 \  
 
 ### choice = 2
-Each Cell line(variable) has a loading on each principal components, which is
-calculated as : **Loadings = Eigenvectors x sqrt(Eigenvalues)**.
-
 
 ```{r eval = TRUE, echo = TRUE}
 analyse_variables(name = "OMICsdata", Assay = "H3k4me1_Cell_wise",choice = 2, 
 title = "Loadings of cell lines on PC1 and PC2", xlab = "PCs")
 ```
-
 \  
 
-Loadings of each variable (here the cell lines) explains the intensity of their 
-correlation with principal components. In the above plot the loading is expressed
-as the contribution of each cell lineson PC 1 and 2. Although the contribution
+Loadings of each variable (here the cell lines) explain the intensity of their
+correlation with principal components. Each Cell line(variable) has a loading
+on each principal components, which is calculated as:
+**Loadings = Eigenvectors x sqrt(Eigenvalues)**.
+
+In the above plot, the loading is expressed
+as the contribution of each cell lines on PC 1 and 2. Although the contribution
 of K562 is very high in PC1, its direction indicates its strong correlation with
-other PCs (PC2). On the other hand Hmec, Huvec, Nha, Nhek and Osteobl are highly
-correlated only with PC1. The small value (hence the small arrows) of contribution
-of other cell lines with PC1 indicates they might be correlated with other PCs also.
-This is more clearly explained when the plot is studies with the table generated 
-by this command simultaneously.
+other PCs (PC2). On the other hand, Hmec, Huvec, Nha, Nhek and Osteobl are highly
+correlated only with PC1. The small value (hence the small arrows) of the 
+contribution of other cell lines with PC1 indicates they might be correlated 
+with other PCs also. This is more clearly explained when the plot is studied
+with the table generated by this command simultaneously.
 \  
-
 
 ### choice = 3
-\  
-As explained in choice 1 section, Hepg2 is slightly different than other
+
+As explained in "chart_correlation()", Hepg2 is slightly different than other
 cell lines, and this is evident in the correlation plot also.
 
 ```{r eval = TRUE, echo = TRUE}
 analyse_variables(name = "OMICsdata", Assay = "H2az_Cell_wise",choice = 3, 
 title = "Correlation matrix", xlab = "PCs")
 ```
-
 \  
 
 ### choice = 4
 
 This choice depicts the message interpreted above more clearly.
+\  
 
 ```{r eval = TRUE, echo = TRUE}
 analyse_variables(name = "OMICsdata", Assay = "H2az_Cell_wise", choice = 4,
 PC = 1, title = "Squarred loadings of Cell lines on PC1")
 ```
-
 \  
 
 ### choice = 5
-The contribution (in percentage) is calculated as : squared loading of the
+
+The contribution (in percentage) is calculated as: squared loading of the
 variable(e.g. a cell line) * 100 / total squared loading of the given
 PC/dimension. This is another way to represent similar message we got from 
 choice 2
-
+\  
 
 ```{r eval = TRUE, echo = TRUE}
 analyse_variables(name = "OMICsdata", Assay = "H2az_Cell_wise", choice = 5,
 PC=1, title = "Contribution of Cell lines on PC1")
 ```
-
 \  
 
 ### choice = 6
-Percentage of variance explained by principal components in all the 
-selected assays.The number of PCs is automatically reduced to the 
-column dimension of the assay having least number of cell lines(and
-thus least number of PCs or dimensions)
 
+Percentage of variance explained by principal components in all the 
+selected assays. The number of PCs is automatically reduced to the 
+column dimension of the assay having the least number of cell lines
+(and thus least number of PCs or dimensions)
+\  
 
 ```{r eval = TRUE}
 analyse_variables(name = "OMICsdata", Assay = c("H3k9ac_Cell_wise",
 "H2az_Cell_wise","H3k4me1_Cell_wise"), 
 choice = 6)
 ```
+\  
 
 ## Analysis of individuals/annotations from integrated data
 
-\  
 We can take the projection of each TSS on the principal components and
 plot them on the space of PCs.
+\  
 
 ### choice = 1
+
 ```{r eval = TRUE, echo = TRUE}
 analyse_individuals(name = "OMICsdata", Assay = "H3k4me1_Cell_wise",
 choice = 1, PC = c(1,2))
 ```
-
 \  
+
 The TSSs on the PC space appears bimodal, indicating two
 broad groups of TSSs in terms of H3k4me1 overlap on them.
 
 Now, let's look at some top rows/TSSs according to some
 conditions like their contribution to selected PCs (contrib)
+\  
 
 ```{r}
 
@@ -1033,15 +1175,13 @@ head(selected$data)
 \ 
 
 Let's mine some information about these selected TSSs.
-(Import some annotations, pathway analysis etc. Ask ma'am/
-friends for more variations)
-
+\  
 
 ```{r}
 
-# The TSSs used in this example are combination of many
-# neighboring TSSs. The combinations should be be uncombined
-# to find corresponding annotations.
+# The TSSs used in this example (each row) are obtained by combining
+# many neighboring TSSs together. The combinations should be uncombined
+# to find the corresponding annotations.
 
 names  <- gsub(";",",",paste(as.character(selected$data$name),
 collapse = ","))
@@ -1052,7 +1192,7 @@ names <- as.vector(strsplit(names, ",", fixed = TRUE)[[1]])
 
 length(names)
 
-# reading transcript details from file (GENCODE v17 annotations)
+# reading transcript details from a file (GENCODE v17 annotations)
 
 path <- system.file("extdata/annotation/transcript_details",
 package = "OMICsPCAdata")
@@ -1060,7 +1200,7 @@ package = "OMICsPCAdata")
 transcript_details <- read.delim(path, quote="",
 stringsAsFactors=FALSE)
 
-# retrive details of top 100 individuals
+# retrieve details of top 100 individuals
 
 details <- transcript_details[
 transcript_details$transcript_id %in% names,,drop = FALSE]
@@ -1074,7 +1214,7 @@ table(details$gene_type)
 \  
 
 We can do various analysis with the gene name or id. Here is
-an anexample:
+an an example:
 \  
 
 ```{r}
@@ -1098,26 +1238,31 @@ ggo <- groupGO(gene     = unique(gene.df$ENTREZID),
 ggo@result <- ggo@result[order(-ggo@result$Count),]
 
 head(ggo@result)
+
+
+# The barplot may not fit to the Rstudio window, therefore
+# we may plot it in a different window
+
 #grDevices::windows()
 #barplot(ggo, drop=TRUE, showCategory=20)
 ```
 \  
 
-There are many packages that do similar kind of analysis. We 
-encourage to visit the website of clusterProfiler to check the
-available analyses by this package.
+There are many packages that do a similar kind of analysis. We 
+encourage to visit the website of **clusterProfiler** to check
+the available analyses by this package.
 \  
 
-***NOTE : *** If we need to see some top individuals from a specific expression
-group, then we should select that group only in 
+***NOTE: *** If we need to see some top individuals from a specific
+expression group, then we should select that group only in 
 "integrate_variable()" function call.
-
 \  
 
-We can draw similar plot in 3D also.
+We can draw a similar plot in 3D also.
 \  
 
 ### choice = 2
+
 ```{r eval = TRUE, echo = TRUE}
 analyse_individuals(name = "OMICsdata", Assay = "H3k4me1_Cell_wise",
 group = c("WE", "RE"), choice = 2, PC = c(1,2,3),
@@ -1131,6 +1276,7 @@ The scatter plot of data points (here, rows/TSSs/individuals)
 may be highly disorganized. In such a situation, we may take
 the help of density functions to understand the overall structure
 of the dataset.
+\  
 
 ```{r}
 
@@ -1144,45 +1290,46 @@ Assay = "H2az_Cell_wise", rand = 10000)
 ## scatterplot on PC1 and 2
 plot(data[,1:2])
 ```
-
+\  
 
 Once the cell lines of an assay are integrated into PCs, we may
 check the density distribution of scores on various principal 
 components. OMICsPCA has a function ***plot_desnity()*** to 
 calculate and plot the density distribution of PC scores. This 
 function uses ggplot(), geom_density() and other additional
-functions from  package ggplot2. Additional arugents of
+functions from  package ggplot2. Additional arugments of
 geom_density (e.g. `adjust`) may be also supplied through this
-function. The returned value is an "gg,ggplot" object.
+function. The returned value is a "gg,ggplot" object.
 
 Such kind of analysis may help us to choose factors
 (e.g. H2az, H3k4me1) that can  discriminate between various groups
 (e.g. our expression groups "WE", "RE", "NE" and "IntE").
 
-**NOTE :** the groups argument should not contain any groups names
-that are not used in **integrate**
-
+**NOTE :** the `groups` argument should not contain a value that is
+not used in **integrate_variables**.
 \  
 
 ### 1D plots
-Here is a non discriminatory factor:
 
+Here is a non-discriminatory factor:
+\  
 
 ```{r eval = TRUE }
 densityplot <- plot_density(name = "OMICsdata", Assay = "H2az_Cell_wise",
 PC = 1, groups = c("WE","RE","NE","IntE"),
 adjust = 1)
 ```
+\  
 
 
 ```{r eval = TRUE, echo = TRUE}
 class(densityplot)
 ```
-
+\ 
 
 Density plots can be modified using other graphical functions like xlim(),
 theme() etc.
-
+\  
 
 ```{r eval = TRUE, echo =TRUE}
 library(ggplot2)
@@ -1191,12 +1338,10 @@ library(graphics)
 densityplot <- densityplot+xlim(as.numeric(c("-8", "23")))
 densityplot
 ```
-
 \  
 
-
 and here is a non discriminatory factor:
-
+\  
 
 ```{r eval = TRUE, echo = TRUE}
 densityplot <- plot_density(name = "OMICsdata", Assay = "H3k4me1_Cell_wise",
@@ -1206,55 +1351,54 @@ densityplot <- densityplot+xlim(as.numeric(c("-8", "15")))
 
 print(densityplot)
 ```
-
 \  
 
 ### 3D plots
 
 OMICsPCA also has a function to visualize the density the scores on 2 principal
 components together in 3D
-
 \  
 
 #### static = FALSE
 
 If `static` is set to "FALSE" the function opens the interactive 3D density plot
 in a new window.
-
+\  
 
 ```{r eval = TRUE, echo = TRUE}
 plot_density_3D(name = "OMICsdata", Assay = "H2az_Cell_wise", group = "WE",
 PC1 = 1,PC2 = 2, grid_size = 100, static = FALSE)
 ```
-
 \  
 
 #### static = TRUE
 
 If `static` is set to "TRUE", some additional graphical parameters may
 be supplied
-
+\  
 
 ```{r eval = TRUE, echo = TRUE}
 plot_density_3D(name = "OMICsdata", Assay = "H2az_Cell_wise", group = "WE",
 PC1 = 1,PC2 = 2, grid_size = 100, static = TRUE, theta = -50,
 phi = 40, box = TRUE, shade = 0.1, ticktype = "detailed", d = 10)
 ```
-
+\  
 
 **NOTE :** 2D density is calculated using the **kde2d** function from
 package **MASS** which use kernel density estimation (KDE) to calculate
 density of 2D data. Now, if the variance on either or both of the PCs are 0,
 the KDE can't be calculated. Here is an  example,
-
+\  
 
 ```{r eval = FALSE, echo = TRUE}
 plot_density_3D(name = "OMICsdata", Assay = "H2az_Cell_wise", group = "NE",
 PC1 = 1,PC2 = 2, grid_size = 100, static = TRUE, theta = -50,
 phi = 40, box = TRUE, shade = 0.1, ticktype = "detailed", d = 10)
 ```
+\  
 
 will show this error:
+\  
 
 ```{}
 Error in kde2d(scores[, 1], scores[, 2], n = gridsize) : 
@@ -1267,21 +1411,21 @@ bandwidths must be strictly positive
 
 Once the discriminatory Assays between the groups are identified by
 previous analyses,  we may integrate all such assays together. 
-
+\  
 
 ```{r eval = TRUE}
 Assays = c("H2az_Cell_wise", "H3k9ac_Cell_wise")
 ```
-
+\  
 
 In this process it is possible to observe that some variables (Cell lines)
 are not similar to others and thus can be excluded :
-
+\  
 
 ```{r eval = TRUE}
 exclude <- list(0,c(1,9))
 ```
-
+\  
 
 The length of the list "exclude" should be equal to the Number of
 assays (i.e. length of "Assays""). If no columns are selected for
@@ -1301,31 +1445,30 @@ The type of merging the assays should be entered by the argument
 
 **integrateAssays()** returns a list containing the start and end
 column of  each Assay in the integrated Assay
-
+\  
 
 ```{r eval = TRUE}
 start_end <- integrateAssays(Assays = c("H2az_Cell_wise",
 "H3k9ac_Cell_wise"), name = "OMICsdata", mergetype = 2,
 exclude = exclude, graph = FALSE)
 ```
-
+\  
 
 if `mergetype` is set to 1, then **integrateAssays** asks for the name of 
 groups to be integrated.
-
+\  
 
 ```{}
 Enter a vector of strings containing group names:
 ```
-
+\  
 
 Here is an example of the allowed input
-
+\  
 
 ```{}
 Enter a vector of strings containing group names: c("WE","RE")
 ```
-
 \  
 
 ## Analysis of integrated data
@@ -1333,14 +1476,13 @@ Enter a vector of strings containing group names: c("WE","RE")
 All the analyses on variables and individuals of integrated Assays
 are designed to be done by the functions
 **analyse_integrated_variables()** and 
-**analyse_integrated_individuals()**. These functions works
-similary as **analyse_variables()** and **analyse_individuals()**
-described in section **VI** and **VII**. The only difference between
-the analyses in section **VI** and **VI** is that, in those sectiones
+**analyse_integrated_individuals()**. These functions work
+similarly as **analyse_variables()** and **analyse_individuals()**
+described in section **3.6** and **3.7**. The only difference between
+the analyses in section **3.6** and **3.7** is that in those sections
 multiple cell lines from a single type of assay were integrated.
 Whereas, the analyses described in this section will be on multiple
-assays.
-
+assays or modalities.
 \  
 
 ### Analyses of variables
@@ -1349,8 +1491,8 @@ The extra argument needs to be supplied in
 **analyse_integrated_variables()** is `start_end` which 
 is the returned value by  **integrateAssays()**.
 
-The `Assay` argument works little bit differently here. it takes
-the the number corresponding to the order of assays used in the
+The `Assay` argument works a little bit differently here. it takes
+the number corresponding to the order of assays used in the
 `Assays` argument of **integrateAssays()**. For example, in the
 above example `Assays` = c("H2az_Cell_wise", "H3k9ac_Cell_wise").
 So here `Assay` = 1 indicates to "H2az_Cell_wise" and
@@ -1358,10 +1500,10 @@ So here `Assay` = 1 indicates to "H2az_Cell_wise" and
 
 The default argument set to `Assay` is "all", which show analyses
 on full  integrated assays. Here are some examples:
-
 \  
 
 #### choice = 1
+
 ```{r echo = FALSE}
 start_end = list(start = c(1, 6), end = c(5, 16))
 ```
@@ -1371,65 +1513,63 @@ start_end = list(start = c(1, 6), end = c(5, 16))
 analyse_integrated_variables(start_end = start_end, name = "OMICsdata",
 choice = 1, title = "variance barplot", addlabels = TRUE)
 ```
-
 \  
 
-A large part of total variance in the the 2 assays (H2az_Cell_wise
+A large part of the total variance in the 2 assays (H2az_Cell_wise
 and H3k9ac_Cell_wise) are captured by PC1 alone. This indicates that
 these two Histone modifications are very similar and this is followed
-by most of the cell lines. remember the `mergetype` was set to 2 in
+by most of the cell lines. Remember the `mergetype` was set to 2 in
 **integrateAssays()**, which uses all the
 groups **("WE", "RE", "NE","IntE")** . This analysis may overshadow
-the true structure of data due to strong influence of "NE", coming
+the true structure of data due to a strong influence of "NE", coming
 from their large number. So redoing the analysis on smaller groups
-(use `mergetype` = 1 in integrateAssays()) may be useful in this context.
+(use `mergetype` = 1 in integrateAssays()) may be useful in this
+context.
 \  
 
 #### choice = 2
+
 ```{r eval = TRUE}
 analyse_integrated_variables(start_end = start_end, Assay = 1,
 name = "OMICsdata", choice = 2 ,
 title = "Loadings of cell lines on PC1 and PC2",
 var_type = "contrib")
 ```
-
 \  
 
 We can see that almost all the cell lines are very strongly correlated
 with PC1. So PC1 of the integrated assays may be a representation of H2az.
-If we repeat this analysis for other assays, we may find out
-strong correlation of multiple assays with a single PC. If this happens,
-we may conclude that those Assays are similar with one another. However,
+If we repeat this analysis for other assays, we may find out a strong
+correlation of multiple assays with a single PC. If this happens,
+we may conclude that those Assays are similar to one another. However,
 they may differ in various groups and cell lines under study. Therefore,
 the `exclude` argument in **integrateAssays** should be carefully chosen 
 in order to exclude non-related cell types.
-
 \  
 
 #### choice = 3
+
 ```{r eval = TRUE}
 analyse_integrated_variables(start_end = start_end, Assay = 1,
 name = "OMICsdata", choice = 3,
 title = "Correlation of Cell lines with PCs of integrated Assays",
 is.cor = TRUE)
 ```
-
 \  
 
 Similar message is appearing here as observed in `choice` = 2.
 Hepg2 in H2az_cell_wise is relatively less correlated with PC1 
-and more with other PCs (Dim), which means it is more variable
-than other cell_types and should be excluded by `exclude` argument
-of integrateAssays()
+and more with other PCs (Dim), indicating that it should be excluded
+by `exclude` argument of integrateAssays()
 \  
 
 #### choice = 4
+
 ```{r eval = TRUE}
 analyse_integrated_variables(start_end = start_end, Assay = 1,
 name = "OMICsdata", choice = 4, PC = 1,
 title = "Squarred loadings of Cell lines on PC1 of integrated Assays")
 ```
-
 \  
 
 Most of the variances explained by PC1 is actually contributed
@@ -1438,49 +1578,48 @@ Hepg2 is different from others.
 \  
 
 #### choice = 5
+
 ```{r eval = TRUE}
 analyse_integrated_variables(start_end = start_end, Assay = 1,
 name = "OMICsdata", choice = 5, PC=1,
 title = "Contribution of Cell lines on PC1 of integrated Assays")
 ```
-
 \  
 
 A total of 16 cell lines are integrated by integrateAssays().
 Therefore, the contribution of each of these 16 should be reflected
 on PCs, if they are of similar type. Here we see that 4 cell lines
-of H2az_Cell_wise contributes around 7% to PC1. This means that PC1
+of H2az_Cell_wise contribute around 7% to PC1. This means that PC1
 is not only the representation of H2az_Cell_wise, but the other
-assay H3k9ac_cell_wise is also represented well in PC1. However we 
+assay H3k9ac_cell_wise is also represented well in PC1. However, we 
 should redo this analysis on H3k9ac_Cell_wise to confirm. 
+\  
 
 ### Analysis of integrated individuals/annotations
 
-\  
-
 This is same as the analyses done using "analyse_individuals()".
-The downstream analyses shown at section **VII** are also applicable
-here.
+The downstream analyses shown at section **3.7** are also applicable
+here. 
+\  
 
 #### choice 1: 2D scatter plot
 
 `PC` should contain 2 values and length(`col`) shoud match with
 length(`PC`)
-
+\  
 
 ```{r eval = TRUE, echo = TRUE}
 analyse_integrated_individuals(start_end = start_end,
 name = "OMICsdata",
 choice = 1, PC = c(1,2))
 ```
-
 \  
 
 #### choice 2: 3D scatter plot
 
 `PC` should contain 3 values and length(`col`) shoud match with
 length(`PC`)
-
+\  
 
 ```{r eval = TRUE}
 analyse_integrated_individuals(start_end = start_end,
@@ -1488,16 +1627,14 @@ name = "OMICsdata", group = c("WE","RE","IntE"),
 choice = 2, PC = c(1,2,3),
 col = c("RED", "BLACK","GREEN"))
 ```
-
 \  
 
 It seems the bimodal structure observed in case of individual assays
 also retained in integrated assays. This structure would be more clear
 if seen from the angle of density.
-
-### Density of integrated data
-
 \  
+
+### Density analysis of integrated data
 
 The scatter plot of data points (here, rows/TSSs/individuals) 
 may be highly disorganized. In such a situation, we may take
@@ -1519,7 +1656,6 @@ plot(data[,1:2])
 \  
 
 #### 1D plot
-\  
 
 ```{r}
 densityplot <- plot_integrated_density(name = "OMICsdata", PC = 1,
@@ -1535,9 +1671,10 @@ densityplot
 \  
 
 #### 3D plot
-\  
+
 
 ##### static = TRUE
+
 ```{r}
 plot_integrated_density_3D(name = "OMICsdata", PC1 = 1, PC2 = 2,
 group = c("WE","RE"), gridsize = 100, static = FALSE)
@@ -1545,6 +1682,7 @@ group = c("WE","RE"), gridsize = 100, static = FALSE)
 \  
 
 ##### static = FALSE
+
 ```{r}
 plot_integrated_density_3D(name = "OMICsdata", PC1 = 1, PC2 = 2,
 group = c("WE","RE"), gridsize = 100, static = TRUE)
@@ -1554,65 +1692,66 @@ group = c("WE","RE"), gridsize = 100, static = TRUE)
 It appears that 
 **NOTE :** The following example will generate same error as 
 discussed above in the section of **plot_density_3D**
-
+\  
 
 ```{r eval = FALSE}
 plot_integrated_density_3D(name = "OMICsdata", PC1 = 1, PC2 = 2,
 group = "NE", gridsize = 100, static = TRUE)
 ```
-
+\  
 
 This happens because the coordinates of each TSS of the group "NE"
 has same value on PC1 and PC2.
 
-The above analyses clearly indicate the presence of two broad groups
-according to combined epigenetic states of various expression groups
-().
+The above analyses clearly indicates the presence of two broad groups
+according to combined epigenetic states of various expression groups.
 The obvious next job is to find out the TSSs in these groups.
+\  
 
 ## Cluster Analysis
 
 The principal components obtained by combining multiple assays
-represents overall epigenetic state of each annotation (here TSSs).
+represent the overall epigenetic state of each annotation (here TSSs).
 Our next objective is to find out groups of similar TSSs in terms of
-combined epigenetic state. We will use suitable clustering
+the combined epigenetic state. We will use a suitable clustering
 technique(s) to accomplish this job.
 
-There are various clustering techniques exists available, each designed
+There are various clustering techniques available, each is designed
 to perform specific tasks. Most of the partition based clustering
-algorithms needs the number of clusters as an input. From our density
-analysis we observed two dense regions in the data space of PC1 and PC2,
-which suggests that the number of clusters should be set at 2. However,
-there are shophisticated indices designed to validate the number of clusters.
+algorithms need the number of clusters as an input. From our density
+analysis, we observed two dense regions in the data space of PC1 and PC2.
+This suggests that the number of clusters should be set at 2. However,
+there are sophisticated indices designed to validate the number of clusters.
 
 OMICsPCA has a function "cluster_parameters()" to perform this job. It runs
-two algorithms "clvalid" and "NbClust" in background, which in turn use
-different set of validation techniques to decide number of clusters.
+two algorithms "clvalid" and "NbClust" in the background, which in turn use
+different sets of validation techniques to decide the number of clusters.
 
 "cluster_parameters()" extracts data from the "OMICs" object supplied through
 `name` argument via the "extract()" function. Both the algorithms used in 
-"cluster_parameters()" function takes huge memory and cpu for higher number
-of samples. Therefore, it is recommended to used a subset of original data
+"cluster_parameters()" function takes huge memory and CPU for a higher number
+of samples. Therefore, it is recommended to use a subset of original data
 while running this function. A subset of rows can be selected randomly through
-the `rand` argument of "extract()". User may also chose whether to use
-integrated assays or non integrated assays through the logical argument
-`integrated` of function "extract()".
-
+the `rand` argument of "extract()". The user may also choose whether to use
+integrated assays or nonintegrated assays through the logical argument
+`integrated` of the function "extract()".
+\  
 
 ```{r}
 data <- extract(name = "OMICsdata", PC = c(1:4),
 groups = c("WE","RE"), integrated = TRUE, rand = 600)
 ```
-
+\  
 
 "cluster_parameters()" uses the output of "extract()" and runs one of the
-algorithm between "clvalid" or "NbClust" to determine number of clusters.
+algorithms between "clvalid" or "NbClust" to determine the number of
+clusters.
 
-The parametrs of "clvalid" and "NbClust" are passed through the 
+The parameters of "clvalid" and "NbClust" are passed through the 
 `clusteringMethods`, `validationMethods` and `distance` argument of
 "cluster_parameters()" function. The argument pairs are different in
 "NbClust" and "clvalid" and thus should be chosen carefully.
-
+\  
 
 ```{r eval = TRUE}
 
@@ -1650,7 +1789,7 @@ fviz_nbclust(clusterstats, method = c("silhouette",
 Now, depending on the output of "cluster_parameters()", we may choose
 the appropriate clustering algorithm and number of clusters.
 
-OMICsPCA has the function "cluster()" designed for the clustering task.
+OMICsPCA has a function "cluster()" that is designed for the clustering task.
 "cluster()" has many clustering options which should be chosen through 
 `choice` argument. The class of the returned value by "cluster()" depends
 on the type of clustering method chosen. So, extraction and visualization
@@ -1669,7 +1808,7 @@ library(factoextra)
 clusters <- cluster(name = data, n = 2, choice = "kmeans",
 title = "kmeans on 2 clusters")
 
-# visualisation of clusters
+# visualization of clusters
 
 print(clusters$plot)
 
@@ -1683,7 +1822,7 @@ clusters <- cluster(name = data, choice = "density",
 eps = 2, MinPts = 100, graph = TRUE,
 title = "eps = 1 and MinPts = 1.5")
 
-# visualisation of clusters
+# visualization of clusters
 print(clusters$plot)
 
 # in 3D
@@ -1700,12 +1839,11 @@ plot3d(clustered_data[,1:3], col = clustered_data$V5)
 \  
 
 ### Validation of clusters
-\  
 
 ```{r}
 
 #### Using silhouette index
-# calculating distance matrix
+# calculating the distance matrix
 library(cluster)
 dist <- daisy(data)
 
@@ -1715,13 +1853,12 @@ sil = silhouette(clusters$cluster$cluster,dist)
 #correctly. So sometimes, it is required to plot in separate
 #window.
 
-grDevices::windows()
-plot(sil)
+#grDevices::windows()
+#plot(sil)
 ```
 \  
 
 ### Identification of misclassified points
-\  
 
 ```{r}
 # Identification of misclassified data points
@@ -1739,10 +1876,9 @@ clusters.
 \  
 
 ### Exploration of clusters
-\  
 
 let's explore the clusters more
-
+\  
 
 ```{r}
 
@@ -1765,20 +1901,125 @@ bp
 
 The overall distribution of H2az is significantly different in
 the two clusters, implying a good clustering by density based.
-This process may be applied on other factors or other clustering
+This process may be applied to other factors or other clustering
 methods.
+\  
+
+\  
+
+# Summary
+\  
+
+Most of the multi-omics data integration algorithms are focused on
+2 applications:
+\  
+
+1) use of integrated data for class prediction (e.g. identification
+of diseased individuals) and
+\  
+
+2) analysis of the source of variation across samples and individuals.
+
+However, such approaches do not suffice to other potential
+applications including quantitative representation of the combined 
+effect of multiple data modalities, clustering of individuals on 
+the basis of combined epigenetic state etc. We propose here a new 
+tool OMICsPCA, designed for integrative analysis of multi-omics data 
+including the ones mentioned above.
+
+Integration of multi-omics data involves 2 major tasks:
+\  
+
+1) analysis of the source of variation among the samples of
+a data modality and
+\  
+
+2) calculation of the combined effect of multiple data modalities
+on the individuals.
+
+We used a **3 step process** to analyse the variation among
+the samples of each data modality. **First**, we used **descriptor()**
+and **chart_correlation()** to get an initial clue about the overall
+nature of the samples. **Second**, we used **integrate_variables()**,
+**analyse_variables()** and **analyse_individuals()** to dissect the
+variation among the samples of a modality, as well as the individuals 
+in a group-wise manner. **Third**, we used density analysis to study the 
+internal structure of the data distribution which in turn used to 
+identify the “discriminatory data modalities” or assays that show
+different density structures in different groups of individuals. 
+These 3 step process is used to study the difference between the 
+groups of individuals and to select the similar samples corresponding
+to a data modality.
+
+In the second task, we linearly combined all the similar samples 
+corresponding to the selected factors (these may be the
+discriminatory factors) using Principal Component Analysis (PCA).
+Each of the Principal components represents the combined state of
+various data modalities across multiple samples. We used these 
+combined metrices to identify similar individuals (TSSs) by various
+clustering methods.
+
+OMICsPCA overcomes the limitations of the existing tools 
+and has a good potential to be used as an multipurpose data 
+integration and analysis tool. 
+\  
 
 \  
 
 # SessionInfo
 \  
 
-“sessionInfo()” which reports the R version number and the packages
-used in this session.
-
 ```{r}
 sessionInfo()
 ```
+\  
 
+\  
 
+# References
+\  
 
+1.	Huang YT. Integrative modeling of multiple genomic data from
+different types of genetic association studies. Biostatistics.
+2014 Oct;15(4):587-602. PubMed PMID: 24705142.
+
+2.	He X, Fuller CK, Song Y, Meng Q, Zhang B, Yang X, et al.
+Sherlock: detecting gene-disease associations by matching patterns
+of expression QTL and GWAS. American journal of human genetics.
+2013 May 2;92(5):667-80. PubMed PMID: 23643380. Pubmed Central 
+PMCID: 3644637.
+
+3.	Xiong Q, Ancona N, Hauser ER, Mukherjee S, Furey TS. 
+Integrating genetic and gene expression evidence into genome-wide 
+association analysis of gene sets. Genome research. 2012 Feb;22(2):
+386-97. PubMed PMID: 21940837. Pubmed Central PMCID: 3266045.
+
+4.	Ha M, Hong S. Gene-regulatory interactions in embryonic stem
+cells represent cell-type specific gene regulatory programs. 
+Nucleic acids research. 2017 Oct 13;45(18):10428-35.
+PubMed PMID: 28977540. Pubmed Central PMCID: 5737473.
+
+5.	Chen L, Ge B, Casale FP, Vasquez L, Kwan T, Garrido-Martin D,
+et al. Genetic Drivers of Epigenetic and Transcriptional Variation
+in Human Immune Cells. Cell. 2016 Nov 17;167(5):1398-414 e24.
+PubMed PMID: 27863251. Pubmed Central PMCID: 5119954.
+
+6.	Consortium GT. Human genomics. The Genotype-Tissue Expression
+(GTEx) pilot analysis: multitissue gene regulation in humans. 
+Science. 2015 May 8;348(6235):648-60. PubMed PMID: 25954001.
+Pubmed Central PMCID: 4547484.
+
+7.	Lanckriet GR, De Bie T, Cristianini N, Jordan MI, Noble WS.
+A statistical framework for genomic data fusion. Bioinformatics.
+2004 Nov 1;20(16):2626-35. PubMed PMID: 15130933.
+
+8.	Wang B, Mezlini AM, Demir F, Fiume M, Tu Z, Brudno M,
+et al. Similarity network fusion for aggregating data types on
+a genomic scale. Nature methods. 2014 Mar;11(3):333-7. 
+PubMed PMID: 24464287.
+
+9.	Argelaguet R, Velten B, Arnol D, Dietrich S, Zenz T, Marioni
+JC, et al. Multi-Omics Factor Analysis-a framework for unsupervised
+integration of multi-omics data sets. Molecular systems biology.
+2018 Jun 20;14(6):e8124. PubMed PMID: 29925568. Pubmed Central
+PMCID: 6010767.

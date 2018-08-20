@@ -6,7 +6,7 @@ descriptor <- function(name, factors,
                 title = NULL){
 
     variable <- value <- exp_group <- no_of_factors <- NULL
-
+    group <- NULL
     # if(!is.null(grouping_factor)){
     #    factors = c(factors, grouping_factor)
     # }

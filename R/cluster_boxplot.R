@@ -2,9 +2,10 @@ cluster_boxplot <- function(name, Assay, clusterobject,
 clustercolumn, choice = NULL){
 
     specificcluster <- subassay <- clusterdata <- NULL
+    variable <- value <- NULL
 
-    clusternumber <- levels(as.factor(clustered_data[, ncol(clustered_data)]))
-    clusternumber <- as.numeric(clusternumber)
+clusternumber <- levels(as.factor(clusterobject[, ncol(clusterobject)]))
+clusternumber <- as.numeric(clusternumber)
 
     for(i in clusternumber){
 specificcluster[[i]] = clusterobject[clusterobject[,clustercolumn] == i,]

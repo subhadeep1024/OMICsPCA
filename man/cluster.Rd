@@ -22,7 +22,8 @@ Number of clusters
 logical. Plots the clusterplot on first 2 dimensions if set TRUE
 }
     \item{choice}{
-Clustering algorithm to use
+Clustering algorithm to use. Available choices are:
+"density", "kmeans", "pam"
 }
     \item{title}{
 Title of the plot
