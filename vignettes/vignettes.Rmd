@@ -90,7 +90,7 @@ databases, allowing researchers to perform integrative analysis
 of multiple data modalities.
 
 Unfortunately, most of such studies are limited to very few 
-numbers of samples(e.g. cell lines) or data modalities (e.g. 
+samples(e.g. cell lines) or data modalities (e.g. 
 various ChIP-seq assays) due to the huge cost, ethical issues,
 and scarcity of samples associated with the entire experimental 
 process. And, most of the data integration methods rely on the 
@@ -141,33 +141,34 @@ developed an unsupervised Gaussian process model for qualitative
 (logical combination of binary values, e.g. 0/1 or TRUE/FALSE) 
 integration of a large number of epigenetic factors and applied 
 it to describe cell lineage-specific gene regulatory programs. 
-Although overcomes the limitation of class association to some 
-extent, this process is only sufficient for the applications where
-qualitative integration is sufficient.
+Although this overcomes the limitation of class association to
+some extent, this process is only sufficient for the 
+applications where qualitative integration is sufficient.
 
 As mentioned earlier, there is another important application of
 data integration, which is associated with the disentanglement
-of the source of variation. A common strategy used in such 
+of the source of variation observed between the samples or the
+individuals. A common strategy used in such 
 studies is to perform a large number of association tests
-between the features and the data modalities (5, 6). Alternatively, 
-kernel or graph-based methods are also considered as methods of
-integration and the integrated data is then used to build common
-similarity networks between samples (7, 8). Although effective 
-in accomplishing specific tasks, such approaches lack proper 
-interpretability (9) and do not suffice to explain many other
-relevant queries applicable to integrated omics data. Such 
-queries include identification of variably controlled genes, 
-genes sharing similar epigenomic state across various samples
-and many more. 
+between the features and the data modalities (5, 6). 
+Alternatively, kernel or graph-based methods are also considered
+as methods of integration and the integrated data is then used
+to build common similarity networks between samples (7, 8). 
+Although effective in accomplishing specific tasks, such 
+approaches lack proper interpretability (9) and do not suffice
+to explain many other relevant queries applicable to integrated 
+omics data. Such queries include identification of variably 
+controlled genes, genes sharing similar epigenomic state across
+various samples and many more. 
 \  
 
 ## OMICsPCA
 
 OMICsPCA is a multipurpose tool designed to overcome the difficulties
 associated with both the applications of data integration. It is 
-designed to identify the source of variation among both the 
+designed to identify the source of variation among the 
 samples/variables (the columns of a table, e.g. cell lines, 
-patients etc.) and individuals (the rows of a table, e.g. genes,
+patients etc.) or individuals (the rows of a table, e.g. genes,
 exons etc.) associated with each data modality (i.e. the tables, 
 e.g. CpG_methylation, ChIP-seq on a protein etc.). It guides the
 user through various analyses to decide on similar samples/variables 
@@ -324,7 +325,7 @@ column_spec(5, border_right = FALSE, width = "5em")
 
 # Example
 \  
-In this section we demonstrate the functionality of OMICsOCA with an example.
+In this section we demonstrate the functionality of OMICsPCA with an example.
 We divided the GENCODE annotated TSSs into 4 groups on the basis of their 
 on-off state in 31 cell lines and mapped ChIP-seq, DNA methylation, DNase I
 hypersensitivity data with them in order to study the consolidated effect of
@@ -490,6 +491,22 @@ head(H2az_all_cells, n = 4)
 
 ```
 \  
+
+For a different assay type repeat the process:
+\  
+
+```{}
+
+factor_x  <- prepareDataset(factdir = fact,
+annofile = anno, annolist = list)
+
+# where `fact` is the directory of the samples corresponding to factor_x
+
+For example,
+
+fact <- system.file("path to cpg")
+cpg <- prepareDataset(factdir = fact, annofile=anno, annolist = list)
+```
 
 ## Reading data 
 
@@ -726,9 +743,9 @@ with various factors")
 
 Above boxplot shows that "H2az","H3k27ac","H3k4me2","H3k4me3","H3k79me2"
 and "H3k9ac" overlaps with Widely Expressed ("WE") TSSs in almost 100 % cell
-lines of respective assays. Thus they can be though of as characteristics of
-"WE". In addition, almost the opposite trait is observed in "NE", which in
-turn indicates that these 6 properties may be the discriminatory factors
+lines of respective assays. Thus they can be thought of as characteristics
+of "WE". In addition, almost the opposite trait is observed in "NE", which
+in turn, indicates that these 6 properties may be the discriminatory factors
 between the various expression groups.
 \  
 
@@ -767,8 +784,8 @@ marks
 
 This function creates pairwise correlation and scatter plots and
 histogram on selected groups. The type of results should be passed 
-through the argument `choice`. This is a wrapper on various functions
-and thus can take additional and non-conflicting arguments
+through the argument `choice`. This is a wrapper function on various
+functions and thus can take additional and non-conflicting arguments
 specific to them.
 \  
 
