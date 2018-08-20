@@ -24,7 +24,7 @@ InputOMICs <- function(name, Assays, typeisfile = FALSE, path = NULL){
 
         tmp[[Assay]] <- table
         } else {
-          print (c("file name", Assay, "does not exist"))
+        print (c("file name", Assay, "does not exist"))
         }
     }
 

@@ -3,32 +3,32 @@ title: 'OMICsPCA: An R package for quantitative integration and analysis of mult
 author: "Subhadeep Das"
 date: "`r Sys.Date()`"
 output:
-  html_document:
-    df_print: tibble
-    fig_height: 7
-    fig_width: 9
-    highlight: pygments
-    number_sections: yes
-    theme: lumen
-    toc: yes
-    toc_depth: 6
+    html_document:
+        df_print: tibble
+        fig_height: 7
+        fig_width: 9
+        highlight: pygments
+        number_sections: yes
+        theme: lumen
+        toc: yes
+        toc_depth: 6
 vignette: >
-  %\VignetteEncoding{UTF-8} 
-  %\VignetteIndexEntry{OMICsPCA} 
-  %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8} 
+    %\VignetteIndexEntry{OMICsPCA} 
+    %\VignetteEngine{knitr::rmarkdown}
 ---
 
 <style type="text/css">
 
 body, td {
-   font-size: 20px;
-   text-align: justify
+    font-size: 20px;
+    text-align: justify
 }
 code.r{
-  font-size: 15px;
+    font-size: 15px;
 }
 pre {
-  font-size: 15px
+    font-size: 15px
 }
 </style>
 
@@ -70,7 +70,7 @@ knitr::opts_chunk$set(fig.pos = 'H')
 ## Background:
 
 OMICsPCA is a statistical framework designed to integrate and
-analyze multiple types of heterogeneous assays, factors, data 
+analyse multiple types of heterogeneous assays, factors, data 
 types or modalities (e.g. ChIP-seq, RNA-seq) from different 
 samples or sources ( e.g. multiple cell lines, time points etc.). 
 Biological processes in eukaryotes are complicated molecular
@@ -111,15 +111,15 @@ the basis of the consolidated effect of these 2 data modalities.
 Consider we have the following datasets:
 \  
 
-1)	CpG methylation on 5 Cell lines A, B, C, D, and E
+1)    CpG methylation on 5 Cell lines A, B, C, D, and E
 \  
 
-2)	H3k4me3 histone modification on 10 Cell lines
+2)    H3k4me3 histone modification on 10 Cell lines
 A,D,E,I,K,Q,P,Z,W and G.
 
 Here, we can not calculate the collective effect directly,
-since the cell lines and the number of cell lines is different
-in the two experiments. 
+since the cell lines and the number of cell lines are
+different in the two experiments. 
 \  
 
 ## Previous approaches/frameworks towards multi-omics data integration
@@ -174,7 +174,7 @@ user through various analyses to decide on similar samples/variables
 (e.g.Cell lines). This is followed by selecting the data modalities
 (e.g. the assays) that can be included or excluded leading to data 
 integration. The selected data modalities can be further integrated 
-and analyzed and the data points or individuals (e.g. genes, TSSs, 
+and analysed and the data points or individuals (e.g. genes, TSSs, 
 exons) may be clustered on the basis of the integrated data coming 
 from single or multiple modalities.
 
@@ -201,12 +201,11 @@ print(image)
 \  
 
 # DATA
-\  
 
-In the following example, we run our analyses on a subset of 12 epigenetic Assays
-and one expression assay. All the data are publicly available at **ENCODE** and
-**ROADMAP epigenomics project** portal. The data is stored in the additional 
-package **OMICsPCAdata()** and summarised below:
+In the following example, we run our analyses on a subset of 12 epigenetic
+Assays and one expression assay. All the data are publicly available
+at **ENCODE** and **ROADMAP epigenomics project** portal. The data is 
+stored in the additional package **OMICsPCAdata()** and summarised below:
 \  
 
 ```{r echo = FALSE}
@@ -337,31 +336,6 @@ effect of discriminatory factors.
 
 ## Preparation of data
 
-OMICsPCA has an inbuilt function **prepareDataset()** that merges the factors
-(e.g. CAGE, H3k4me1 etc) corresponding to each annotation (eg. gene, TSS, exon
-etc.) and from each cell lines into a dataframe and returns this dataframe. 
-The rows of this returned dataframe contain the annotations and each column
-contain the values corresponding to a factor specific to a particular cell
-type.
-
-The arguments taken by this function is described below:
-
-1. **factdir** : full path of the directory containing files corresponding to
-various cell lines in `.bed` format. This directory should contain only the
-files of the same assay (e.g. H3k9ac).
-
-2. **annofile** : full path of the file containing the annotation file
-(e.g exons, TSSs, genes etc) in `.bed` format
-
-3. **annolist** : name of full set or subset of the entries in the annotation
-file.
-
-The `.bed` files should have at least 4 columns. The first column is the
-chromosome name, the second and third is the start and end of the feature
-(e.g. a gene or a ChIP-seq peak etc) accordingly and the fourth column 
-contains the value (e.g. expression of a gene, ChIP-seq intensity of a peak
-or name of a gene etc.). Some examples of `.bed` files are shown below : 
-
 OMICsPCA has an inbuilt function **prepareDataset()** that aggregates
 the samples (e.g. cell lines) of each data modality (e.g. a histone 
 modification ChIP-seq assay) corresponding to each feature of the genome
@@ -371,12 +345,34 @@ The rows of this dataframe object contain the features (e.g. genes)
 and each column contains the values corresponding to a sample
 (e.g. Cell line).
 
+The arguments taken by this function is described below:
+
+1.    `factdir`: full path of the directory containing files corresponding
+to various cell lines in .bed format. This directory should contain only
+the files of the same assay (modality) (e.g. H3k9ac) from different
+samples (e.g. cell lines).
+
+2.    `annofile`: full path of the file containing the annotation file
+(e.g exons, TSSs, genes etc) in .bed format. 
+
+3.    `annolist`: name of full set or subset of the entries in the 
+annotation file. The **.bed** files should have at least 4 columns.
+The first column is the chromosome name, the second and third is
+the start and end position of the feature (e.g. a gene or a
+ChIP-seq peak etc). The fourth column contains the value of the
+described feature (e.g. expression of a gene, the ChIP-seq
+intensity of a peak or name of a gene etc.).
+
+The `.bed` files should have at least 4 columns. The first column is the
+chromosome name, the second and third is the start and end of the feature
+(e.g. a gene or a ChIP-seq peak etc) accordingly and the fourth column 
+contains the value (e.g. expression of a gene, ChIP-seq intensity of a peak
+or name of a gene etc.).
+
 Some examples of the input file formats are given below:
 \  
 
 ```{r echo = FALSE}
-# Reading demo data into object Gm12878, named after 5ther corresponding
-#Cell line.
 
 Gm12878 <- read.delim(
 "~/R/win-library/3.5/OMICsPCAdata/extdata/factors/H3k27ac/Gm12878.bed",
@@ -397,25 +393,6 @@ header=FALSE, sep = "\t")
 names(TSS_list)[1] <- c("GENCODE TSS ID") 
 
 ```
-\  
-
-The arguments taken by this function is described below:
-
-1.	`factdir`: full path of the directory containing files corresponding
-to various cell lines in .bed format. This directory should contain only
-the files of the same assay (modality) (e.g. H3k9ac) from different
-samples (e.g. cell lines).
-
-2.	`annofile`: full path of the file containing the annotation file
-(e.g exons, TSSs, genes etc) in .bed format. 
-
-3.	`annolist`: name of full set or subset of the entries in the 
-annotation file. The **.bed** files should have at least 4 columns.
-The first column is the chromosome name, the second and third is
-the start and end position of the feature (e.g. a gene or a
-ChIP-seq peak etc). The fourth column contains the value of the
-described feature (e.g. expression of a gene, the ChIP-seq
-intensity of a peak or name of a gene etc.).
 \  
 
 ```{r eval = FALSE, echo = FALSE, results='asis'}
@@ -519,7 +496,7 @@ head(H2az_all_cells, n = 4)
 OMICsPCA is designed to read various assays done on various cell lines
 into an user-defined S4 variable and then run various analyses on this
 object. The class of this S4 object is predefined as **OMICS** and a 
-contsructor function in this name is provided to create an object of 
+constructor function in this name is provided to create an object of 
 class **OMICS**. For ease of analysis, we compiled some preloaded data 
 similar to the output of prepareData() into the supporting package
 OMICsPCAdata().
@@ -608,7 +585,7 @@ in 31 cell lines.
 OMICsPCA has a function **create_group()** to do this task. This
 function takes the following 4 arguments:
 
-1. **group_names** : a vector containing the user defined names of the
+1. **group_names** : a vector containing the user-defined names of the
 groups to be created
 
 2. **factor** : name of the data frame on which groups will be created
@@ -721,15 +698,18 @@ OMICsPCA has several functions for EDA.
 Descriptor works in two modes depending on the value passed through
 the argument `choice`. choice = 1 displays panels of boxplots
 corresponding to the Assay(s) or factor(s) or modality(ies) chosen
-through argument `factor`. Each panel shows number of boxplots
+through argument `factor`. Each panel shows a number of boxplots
 corresponding to the  group(s) passed through argument `groups`.
-Each boxplot in choice 1  represents the distribution of 
-percentage of cell lines corresponding to a group that are overlapped 
+Each boxplot in choice 1  represents the distribution of the 
+percentage of cell lines corresponding to a group that is overlapped 
 with the selected assay.  
 
 **NOTE :** in `groups`, one group name should be used only once.
+\  
+
 **NOTE :** `groups` can handle only the predefined groups or the groups 
 created by "create_group()"
+\  
 
 ```{r}
 descriptor(name = "OMICsdata",
@@ -756,9 +736,9 @@ In `choice` = 2, a value needs to be supplied to the argument
 `choice2group`. This value should be the name of one of the 
 groups created by "create_group()".
 The plot displayed in this mode represents the distribution 
-of percentage of celll ines corresponding to a factor/Assay/modality
-with various combination of other Assays/factors/modalities
-supplied through `factors`.
+of the percentage of celll lines corresponding to a
+factor/Assay/modality with various combination of other
+Assays/factors/modalities supplied through `factors`.
 \  
 
 ```{r}
@@ -778,8 +758,9 @@ selected group")
 
 The above set of boxplots indicates that most of the epigenetic factors in
 Widely expressed TSSs ("WE") are present with other factors, except CpG
-methylation (leftmost boxplot of uppermost and leftmost panel). This gives us
-an indication of interplay between various epigenetic marks
+methylation (leftmost boxplot of the uppermost and leftmost panel). 
+This gives us an indication of the interplay between various epigenetic
+marks
 \  
 
 ### chart_correlation()
@@ -832,7 +813,7 @@ groups = "WE", choice = "scatter")
 ```
 \  
 
-All the correlation scatterplots of TSSs in "WE" looks similar shaped
+All the correlation scatterplots of TSSs in "WE" looks similarly shaped
 except the ones coming from Hepg2. This is an indication that H2az pattern
 of the expression group "WE" is different in Hepg2 than other 4 cell lines.
 
@@ -846,7 +827,7 @@ groups = "WE", choice = "table")
 ```
 \  
 
-The diversion of hepg2 is more evident when plotted as histogram.
+The diversion of hepg2 is more evident when plotted as a histogram.
 The mode of "WE" is close to 0 in Hepg2 compared to other cell lines.
 This indicates that most of the "WE" in Hepg2 do not have H2az marks on them.
 \  
@@ -883,7 +864,7 @@ from multiple cells or conditions using PCA.
 1. **factor**: name of data frames similar to the ones created by 
 ***prepareDataset()***. 
 
-An example of such data frame is given below:
+An example of such a data frame is given below:
 \  
 
 ```{r echo = TRUE}
@@ -894,9 +875,9 @@ head(H3k4me1_Cell_wise[177:179,1:5])
 2. **name**: a vector containing the names of the groups created by
 **create_groups()** . e.g.
 
-3. **groups**: full set or subset of groups created by
-***create_group()***. The group names should be provided as vector string.
-e.g. c("WE" ,"RE")
+3. **groups**: a full set or subset of groups created by
+***create_group()***. The group names should be provided as a 
+vector string. e.g. c("WE" ,"RE")
 
 ***integrate_variables()*** subsets the input dataframe into another
 dataframe according to the `groups` argument and integrates all
@@ -904,7 +885,7 @@ columns of the sub data frame using PCA. This function is a wrapper
 around the function PCA() from package FactoMineR and thus can take
 additional arguments specific to the function PCA()
 
-In this example we supply two more additional arguments **scale.unit = FALSE**
+In this example, we supply two more additional arguments **scale.unit = FALSE**
 and **graph = FALSE** 
 
 The combined data is stored in the PCA slot of the "OMICs" object.
@@ -1008,10 +989,10 @@ library(kableExtra)
 
 **Note:** User may use the functions listed below directly to supply more
 graphical parameters (e.g. `ncp` in choice 1, i.e. in fviz_eig, to restrict
-the display of the number of dimensions or use `select.var` in choice 2 to select
-columns/variables/cell lines satisfying some condition.). use `?` followed by
-the function name listed in the above table to explore more options available
-for each choice of "analyse_variables()".
+the display of the number of dimensions or use `select.var` in choice 2
+to select columns/variables/cell lines satisfying some condition.).
+use `?` followed by the function name listed in the above table to 
+explore more options available for each choice of "analyse_variables()".
 \  
 
 ```{r, echo=FALSE, eval = FALSE, results='asis'}
@@ -1056,10 +1037,10 @@ title = "variance barplot", addlabels = TRUE)
 ```
 \  
 
-83.3 % of variation is captured by PC1 alone, which indicates that 5 cell lines are
-very similar to one another. However, there may be the influence of huge number of ]
-"NE" (see integrate_variables() step). Therefore doing this analysis might be worth
-on each individual expression group.
+83.3 % of variation is captured by PC1 alone, which indicates that 5 cell 
+lines are very similar to one another. However, there may be the influence
+of the huge number of "NE" (see integrate_variables() step). Therefore
+doing this analysis might be worth on each individual expression group.
 \  
 
 ### choice = 2
@@ -1078,11 +1059,11 @@ on each principal components, which is calculated as:
 In the above plot, the loading is expressed
 as the contribution of each cell lines on PC 1 and 2. Although the contribution
 of K562 is very high in PC1, its direction indicates its strong correlation with
-other PCs (PC2). On the other hand, Hmec, Huvec, Nha, Nhek and Osteobl are highly
-correlated only with PC1. The small value (hence the small arrows) of the 
-contribution of other cell lines with PC1 indicates they might be correlated 
-with other PCs also. This is more clearly explained when the plot is studied
-with the table generated by this command simultaneously.
+other PCs (PC2). On the other hand, Hmec, Huvec, Nha, Nhek and Osteobl are
+highly correlated only with PC1. The small value (hence the small arrows)
+of the contribution of other cell lines with PC1 indicates they might be 
+correlated with other PCs also. This is more clearly explained when the plot
+is studied with the table generated by this command simultaneously.
 \  
 
 ### choice = 3
@@ -1214,7 +1195,7 @@ table(details$gene_type)
 \  
 
 We can do various analysis with the gene name or id. Here is
-an an example:
+an example:
 \  
 
 ```{r}
@@ -1231,13 +1212,16 @@ gene.df <- bitr(gene, fromType = "SYMBOL",
                 OrgDb = org.Hs.eg.db)
 
 ggo <- groupGO(gene     = unique(gene.df$ENTREZID),
-               OrgDb    = org.Hs.eg.db,
-               ont      = "MF",
-               level    = 5,
-               readable = TRUE)
-ggo@result <- ggo@result[order(-ggo@result$Count),]
+                OrgDb    = org.Hs.eg.db,
+                ont      = "MF",
+                level    = 5,
+                readable = TRUE)
 
-head(ggo@result)
+# If we want to see the top results, we need to reorder
+#the list. So, the following line is strictly optional.
+
+#ggo@result <- ggo@result[order(-ggo@result$Count),]
+#head(ggo@result)
 
 
 # The barplot may not fit to the Rstudio window, therefore
@@ -1297,7 +1281,7 @@ check the density distribution of scores on various principal
 components. OMICsPCA has a function ***plot_desnity()*** to 
 calculate and plot the density distribution of PC scores. This 
 function uses ggplot(), geom_density() and other additional
-functions from  package ggplot2. Additional arugments of
+functions from  package ggplot2. Additional arguments of
 geom_density (e.g. `adjust`) may be also supplied through this
 function. The returned value is a "gg,ggplot" object.
 
@@ -1311,7 +1295,7 @@ not used in **integrate_variables**.
 
 ### 1D plots
 
-Here is a non-discriminatory factor:
+Here is a discriminatory factor:
 \  
 
 ```{r eval = TRUE }
@@ -1340,7 +1324,7 @@ densityplot
 ```
 \  
 
-and here is a non discriminatory factor:
+and here is a non-discriminatory factor:
 \  
 
 ```{r eval = TRUE, echo = TRUE}
@@ -1386,8 +1370,8 @@ phi = 40, box = TRUE, shade = 0.1, ticktype = "detailed", d = 10)
 
 **NOTE :** 2D density is calculated using the **kde2d** function from
 package **MASS** which use kernel density estimation (KDE) to calculate
-density of 2D data. Now, if the variance on either or both of the PCs are 0,
-the KDE can't be calculated. Here is an  example,
+the density of 2D data. Now, if the variance on either or both of the
+PCs are 0, the KDE can't be calculated. Here is an  example,
 \  
 
 ```{r eval = FALSE, echo = TRUE}
@@ -1557,7 +1541,7 @@ is.cor = TRUE)
 ```
 \  
 
-Similar message is appearing here as observed in `choice` = 2.
+A Similar message is appearing here as observed in `choice` = 2.
 Hepg2 in H2az_cell_wise is relatively less correlated with PC1 
 and more with other PCs (Dim), indicating that it should be excluded
 by `exclude` argument of integrateAssays()
@@ -1597,14 +1581,14 @@ should redo this analysis on H3k9ac_Cell_wise to confirm.
 
 ### Analysis of integrated individuals/annotations
 
-This is same as the analyses done using "analyse_individuals()".
+This is the same as the analyses done using "analyse_individuals()".
 The downstream analyses shown at section **3.7** are also applicable
 here. 
 \  
 
 #### choice 1: 2D scatter plot
 
-`PC` should contain 2 values and length(`col`) shoud match with
+`PC` should contain 2 values and length(`col`) should match with
 length(`PC`)
 \  
 
@@ -1617,7 +1601,7 @@ choice = 1, PC = c(1,2))
 
 #### choice 2: 3D scatter plot
 
-`PC` should contain 3 values and length(`col`) shoud match with
+`PC` should contain 3 values and length(`col`) should match with
 length(`PC`)
 \  
 
@@ -1690,7 +1674,7 @@ group = c("WE","RE"), gridsize = 100, static = TRUE)
 \  
 
 It appears that 
-**NOTE :** The following example will generate same error as 
+**NOTE :** The following example will generate the same error as 
 discussed above in the section of **plot_density_3D**
 \  
 
@@ -1701,9 +1685,9 @@ group = "NE", gridsize = 100, static = TRUE)
 \  
 
 This happens because the coordinates of each TSS of the group "NE"
-has same value on PC1 and PC2.
+has the same value on PC1 and PC2.
 
-The above analyses clearly indicates the presence of two broad groups
+The above analyses clearly indicate the presence of two broad groups
 according to combined epigenetic states of various expression groups.
 The obvious next job is to find out the TSSs in these groups.
 \  
@@ -1979,46 +1963,46 @@ sessionInfo()
 # References
 \  
 
-1.	Huang YT. Integrative modeling of multiple genomic data from
+1.    Huang YT. Integrative modeling of multiple genomic data from
 different types of genetic association studies. Biostatistics.
 2014 Oct;15(4):587-602. PubMed PMID: 24705142.
 
-2.	He X, Fuller CK, Song Y, Meng Q, Zhang B, Yang X, et al.
+2.    He X, Fuller CK, Song Y, Meng Q, Zhang B, Yang X, et al.
 Sherlock: detecting gene-disease associations by matching patterns
 of expression QTL and GWAS. American journal of human genetics.
 2013 May 2;92(5):667-80. PubMed PMID: 23643380. Pubmed Central 
 PMCID: 3644637.
 
-3.	Xiong Q, Ancona N, Hauser ER, Mukherjee S, Furey TS. 
+3.    Xiong Q, Ancona N, Hauser ER, Mukherjee S, Furey TS. 
 Integrating genetic and gene expression evidence into genome-wide 
 association analysis of gene sets. Genome research. 2012 Feb;22(2):
 386-97. PubMed PMID: 21940837. Pubmed Central PMCID: 3266045.
 
-4.	Ha M, Hong S. Gene-regulatory interactions in embryonic stem
+4.    Ha M, Hong S. Gene-regulatory interactions in embryonic stem
 cells represent cell-type specific gene regulatory programs. 
 Nucleic acids research. 2017 Oct 13;45(18):10428-35.
 PubMed PMID: 28977540. Pubmed Central PMCID: 5737473.
 
-5.	Chen L, Ge B, Casale FP, Vasquez L, Kwan T, Garrido-Martin D,
+5.    Chen L, Ge B, Casale FP, Vasquez L, Kwan T, Garrido-Martin D,
 et al. Genetic Drivers of Epigenetic and Transcriptional Variation
 in Human Immune Cells. Cell. 2016 Nov 17;167(5):1398-414 e24.
 PubMed PMID: 27863251. Pubmed Central PMCID: 5119954.
 
-6.	Consortium GT. Human genomics. The Genotype-Tissue Expression
+6.    Consortium GT. Human genomics. The Genotype-Tissue Expression
 (GTEx) pilot analysis: multitissue gene regulation in humans. 
 Science. 2015 May 8;348(6235):648-60. PubMed PMID: 25954001.
 Pubmed Central PMCID: 4547484.
 
-7.	Lanckriet GR, De Bie T, Cristianini N, Jordan MI, Noble WS.
+7.    Lanckriet GR, De Bie T, Cristianini N, Jordan MI, Noble WS.
 A statistical framework for genomic data fusion. Bioinformatics.
 2004 Nov 1;20(16):2626-35. PubMed PMID: 15130933.
 
-8.	Wang B, Mezlini AM, Demir F, Fiume M, Tu Z, Brudno M,
+8.    Wang B, Mezlini AM, Demir F, Fiume M, Tu Z, Brudno M,
 et al. Similarity network fusion for aggregating data types on
 a genomic scale. Nature methods. 2014 Mar;11(3):333-7. 
 PubMed PMID: 24464287.
 
-9.	Argelaguet R, Velten B, Arnol D, Dietrich S, Zenz T, Marioni
+9.    Argelaguet R, Velten B, Arnol D, Dietrich S, Zenz T, Marioni
 JC, et al. Multi-Omics Factor Analysis-a framework for unsupervised
 integration of multi-omics data sets. Molecular systems biology.
 2018 Jun 20;14(6):e8124. PubMed PMID: 29925568. Pubmed Central

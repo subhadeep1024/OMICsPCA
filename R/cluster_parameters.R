@@ -38,11 +38,11 @@ switch(comparisonAlgorithm,
         },
 
         "NbClust" = {
-          clusterstats <- NbClust(name, distance =  distance,
-          min.nc = min.nc, max.nc = max.nc,
-          index = validationMethods,
-          method = clusteringMethods)
-          #clusterstats <- t(clusterstats$Best.nc)
+        clusterstats <- NbClust(name, distance =  distance,
+        min.nc = min.nc, max.nc = max.nc,
+        index = validationMethods,
+        method = clusteringMethods)
+        #clusterstats <- t(clusterstats$Best.nc)
         }
 )
 

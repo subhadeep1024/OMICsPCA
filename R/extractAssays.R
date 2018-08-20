@@ -15,5 +15,5 @@ extractAssay <- function(name, Assay, groups){
                         "@InputAssays$", Assay))))
 
     subset <- transform(subset, group = x$group)
-  return(subset)
+    return(subset)
 }

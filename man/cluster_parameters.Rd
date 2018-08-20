@@ -29,7 +29,7 @@ a vector of numbers corresponding to the number of clusters
 to be tested or validated
 }
 
-  \item{comparisonAlgorithm}{
+    \item{comparisonAlgorithm}{
 2 choices available: "clValid" or "NbClust"
 }
 
@@ -42,8 +42,8 @@ available choices are:
 "pam", "clara" and "agnes"
 
 2) if comparisonAlgorithm = "NbClust" :
- "ward.D", "ward.D2", "single", "complete", "average", "mcquitty",
- "median", "centroid", "kmeans".
+"ward.D", "ward.D2", "single", "complete", "average", "mcquitty",
+"median", "centroid", "kmeans".
 
 }
     \item{validationMethods}{

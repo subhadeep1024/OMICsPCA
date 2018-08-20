@@ -17,7 +17,7 @@ name of the "OMICs" object from which data is to be retrieved.
     \item{Assay}{
 name of the "Assay" from which data is to be retrieved.
 }
-  \item{groups}{
+    \item{groups}{
 name of the "groups" from which data is to be retrieved.
 }
 }

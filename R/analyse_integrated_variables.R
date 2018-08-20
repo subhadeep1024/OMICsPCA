@@ -1,9 +1,9 @@
 analyse_integrated_variables <- function(start_end = start_end, Assay = "all",
-                                name, choice, title = NULL, PC = 1,
-                                var_type = "contrib", ...){
+name, choice, title = NULL, PC = 1,
+var_type = "contrib", ...){
 
 
-  subset <- eval(parse(text = name))
+    subset <- eval(parse(text = name))
     if(Assay  != "all"){
 
         PCA <- subset@integratedPCA

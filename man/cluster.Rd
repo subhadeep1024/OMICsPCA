@@ -37,15 +37,29 @@ additional non-conflicting arguments to cluster functions
 returns a list containing the cluster and plot information
 }
 \references{
-Martin Ester, Hans-Peter Kriegel, Joerg Sander, Xiaowei Xu (1996). A Density-Based Algorithm for Discovering Clusters in Large Spatial Databases with Noise. Institute for Computer Science, University of Munich. Proceedings of 2nd International Conference on Knowledge Discovery and Data Mining (KDD-96).
+Martin Ester, Hans-Peter Kriegel, Joerg Sander, Xiaowei Xu (1996).
+A Density-Based Algorithm for Discovering Clusters in Large Spatial
+Databases with Noise. Institute for Computer Science, University of
+Munich. Proceedings of 2nd International Conference on Knowledge
+Discovery and Data Mining (KDD-96).
 
-Forgy, E. W. (1965). Cluster analysis of multivariate data: efficiency vs interpretability of classifications. Biometrics, 21, 768–769.
+Forgy, E. W. (1965). Cluster analysis of multivariate data:
+efficiency vs interpretability of classifications.
+Biometrics, 21, 768–769.
 
-Hartigan, J. A. and Wong, M. A. (1979). Algorithm AS 136: A K-means clustering algorithm. Applied Statistics, 28, 100–108. doi: 10.2307/2346830.
+Hartigan, J. A. and Wong, M. A. (1979). Algorithm AS 136: A K-means
+clustering algorithm. Applied Statistics, 28, 100–108.
+doi: 10.2307/2346830.
 
-Lloyd, S. P. (1957, 1982). Least squares quantization in PCM. Technical Note, Bell Laboratories. Published in 1982 in IEEE Transactions on Information Theory, 28, 128–137.
+Lloyd, S. P. (1957, 1982). Least squares quantization in PCM.
+Technical Note, Bell Laboratories. Published in 1982 in IEEE
+Transactions on Information Theory, 28, 128–137.
 
-MacQueen, J. (1967). Some methods for classification and analysis of multivariate observations. In Proceedings of the Fifth Berkeley Symposium on Mathematical Statistics and Probability, eds L. M. Le Cam & J. Neyman, 1, pp. 281–297. Berkeley, CA: University of California Press.
+MacQueen, J. (1967). Some methods for classification and analysis
+of multivariate observations. In Proceedings of the Fifth Berkeley
+Symposium on Mathematical Statistics and Probability,
+eds L. M. Le Cam & J. Neyman, 1, pp. 281–297. Berkeley,
+CA: University of California Press.
 
 }
 \author{

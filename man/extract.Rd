@@ -14,23 +14,23 @@ rand = NULL, PC = c(1:4))
 }
 
 \arguments{
-  \item{name}{
+    \item{name}{
 name of the OMICs object.
 }
-  \item{groups}{
+    \item{groups}{
 one or more groups created by or supplied through
 "create_group()"
 }
-  \item{integrated}{
+    \item{integrated}{
 whether to extract coordinates from integrated or individual assay.
 }
-  \item{Assay}{
+    \item{Assay}{
 name of the assay if integrated = FALSE
 }
-  \item{rand}{
+    \item{rand}{
 number of rows to be extracted randomly.
 }
-  \item{PC}{
+    \item{PC}{
 principal component numbers. The projected informaton on this PCs
 will be extracted.
 }

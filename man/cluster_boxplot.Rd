@@ -12,20 +12,20 @@ cluster_boxplot(name, Assay, clusterobject, clustercolumn, choice = NULL)
 }
 
 \arguments{
-  \item{name}{
+    \item{name}{
 
 }
-  \item{Assay}{
+    \item{Assay}{
 name of the assay which is to be compared
 }
-  \item{clusterobject}{
+    \item{clusterobject}{
 a cluster object returned by the cluster() function
 }
-  \item{clustercolumn}{
+    \item{clustercolumn}{
 the column in the clusterobject containing the group membership
 information
 }
-  \item{choice}{
+    \item{choice}{
 type of graph
 }
 }
