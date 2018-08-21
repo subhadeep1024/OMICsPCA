@@ -39,7 +39,7 @@ library(OMICsPCAdata)
 library(kableExtra)
 library(rmarkdown)
 library(knitr)
-library(EBImage)
+library(magick)
 library(rgl)
 library(cluster)
 library(fpc)
@@ -191,9 +191,9 @@ and their arguments
 \  
 
 ```{r echo = FALSE, message = FALSE}
-fc <- system.file("images/OMICsPCA.png", package = "OMICsPCAdata")
-image <- readImage(fc)
-display(image)
+fc <- system.file("images/OMICsPCA.pdf", package = "OMICsPCAdata")
+image <- image_read_pdf(fc)
+print(image)
 ```
 \  
 
