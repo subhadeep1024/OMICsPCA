@@ -367,19 +367,19 @@ Some examples of the input file formats are given below:
 ```{r echo = FALSE}
 
 Gm12878 <- read.delim(
-"~/R/win-library/3.5/OMICsPCAdata/extdata/factors/H3k27ac/Gm12878.bed",
+system.file("extdata/factors/H3k27ac/Gm12878.bed", package = "OMICsPCAdata"),
 header=FALSE, sep = "\t")
 
 names(Gm12878) <- c("chromosome", "start","end","intensity")
 
 annotation <- read.delim(
-"~/R/win-library/3.5/OMICsPCAdata/extdata/annotation/TSS_groups.bed",
+system.file("extdata/annotation/TSS_groups.bed", package = "OMICsPCAdata"),
 header=FALSE, sep = "\t")
 
 names(annotation) <- c("chromosome", "start","end","TSS ID") 
 
 TSS_list <- read.delim(
-"~/R/win-library/3.5/OMICsPCAdata/extdata/annotation/GENCODE_list",
+system.file("extdata/annotation/GENCODE_list", package = "OMICsPCAdata"),
 header=FALSE, sep = "\t")
 
 names(TSS_list)[1] <- c("GENCODE TSS ID") 
