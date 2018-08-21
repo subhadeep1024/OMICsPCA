@@ -12,7 +12,7 @@ Description: OMICsPCA is an analysis pipeline designed to integrate multi OMICs 
 License: GPL-3
 Encoding: UTF-8
 biocViews:  MultipleComparison, PrincipalComponent, DataRepresentation, Workflow, Visualization, DimensionReduction, Clustering,  BiologicalQuestion, EpigeneticsWorkflow, Transcription, GeneticVariability, GUI,  BiomedicalInformatics, Epigenetics,  FunctionalGenomics, SingleCell 
-Imports: HelloRanges, fpc, stats, clusterProfiler, org.Hs.eg.db, methods, grDevices, utils,clValid, NbClust, cowplot, OMICsPCAdata, rmarkdown, kableExtra, rtracklayer, IRanges, GenomeInfoDb, reshape2, ggplot2, factoextra, rgl, corrplot, MASS, graphics, FactoMineR, PerformanceAnalytics, tidyr, data.table, cluster, EBImage
+Imports: HelloRanges, fpc, stats, clusterProfiler, org.Hs.eg.db, methods, grDevices, utils,clValid, NbClust, cowplot, OMICsPCAdata, rmarkdown, kableExtra, rtracklayer, IRanges, GenomeInfoDb, reshape2, ggplot2, factoextra, rgl, corrplot, MASS, graphics, FactoMineR, PerformanceAnalytics, tidyr, data.table, cluster, magick
 VignetteBuilder: knitr
 LazyData: TRUE
 RoxygenNote: 6.0.1
