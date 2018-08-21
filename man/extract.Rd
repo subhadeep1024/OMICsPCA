@@ -10,7 +10,7 @@ on principal components.
 }
 \usage{
 extract(name, groups, integrated = TRUE, Assay = NULL,
-rand = NULL, PC = c(1:4))
+rand = NULL, PC = c(1,2,3,4))
 }
 
 \arguments{
@@ -67,7 +67,7 @@ Assays <- c("H2az_Cell_wise", "H3k9ac_Cell_wise",
 # groups = c("WE","RE","NE","IntE"),scale.unit = FALSE,
 #   graph = FALSE)
 #
-# data <- extract(name = "OMICsdata", PC = c(1:4),
+# data <- extract(name = "OMICsdata", PC = c(1,2,3,4),
 # groups = c("WE","RE"), integrated = TRUE, rand = 500)
 
 }
