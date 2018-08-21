@@ -10,8 +10,6 @@ min.nc = min(n)
 max.nc = max(n)
 clusterstats <- NULL
 
-    set.seed(123)
-
 
 switch(comparisonAlgorithm,
 
