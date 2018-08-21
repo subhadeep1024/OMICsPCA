@@ -41,9 +41,6 @@ library(rmarkdown)
 library(knitr)
 library(magick)
 library(rgl)
-library(cluster)
-library(fpc)
-library(clusterProfiler)
 library(grDevices)
 ```
 
@@ -391,17 +388,17 @@ OMICsdata <- OMICs()
 
 str(OMICsdata)
 
-Assays <- c("CAGE_Cell_wise_v2",
+
+### reading data into OMICsdata object
+InputOMICs(name = "OMICsdata",
+            Assays = c("CAGE_Cell_wise_v2",
             "H2az_Cell_wise",
             "H3k27ac_Cell_wise",
             "H3k4me1_Cell_wise",
             "H3k4me2_Cell_wise",
             "H3k79me2_Cell_wise",
             "H3k9ac_Cell_wise",
-            "H3k9me3_Cell_wise")
-
-### reading data into OMICsdata object
-InputOMICs(name = "OMICsdata", Assays = Assays)
+            "H3k9me3_Cell_wise"))
 
 
 ```
@@ -416,19 +413,22 @@ containing files to be read.
 \  
 
 ```{r eval = TRUE}
-Assays <- c("CAGE_Cell_wise_v2",
-            "H2az_Cell_wise",
-            "H3k27ac_Cell_wise",
-            "H3k4me1_Cell_wise",
-            "H3k4me2_Cell_wise",
-            "H3k79me2_Cell_wise",
-            "H3k9ac_Cell_wise",
-            "H3k9me3_Cell_wise")
+
 path = system.file("extdata/rawdata", package = "OMICsPCAdata")
 
 ### reading data into OMICsdata object
-InputOMICs(name = "OMICsdata", Assays = Assays, typeisfile = TRUE,
-path = path)
+InputOMICs(name = "OMICsdata", 
+    Assays = c(
+    "CAGE_Cell_wise_v2",
+    "H2az_Cell_wise",
+    "H3k27ac_Cell_wise",
+    "H3k4me1_Cell_wise",
+    "H3k4me2_Cell_wise",
+    "H3k79me2_Cell_wise",
+    "H3k9ac_Cell_wise",
+    "H3k9me3_Cell_wise"),
+    typeisfile = TRUE,
+    path = path)
 ```
 \  
 
@@ -607,8 +607,7 @@ selected group")
 \  
 
 The above set of boxplots indicates that most of the epigenetic factors in
-Widely expressed TSSs ("WE") are present with other factors, except CpG
-methylation (leftmost boxplot of the uppermost and leftmost panel). 
+Widely expressed TSSs ("WE") are present with other factors.
 This gives us an indication of the interplay between various epigenetic
 marks
 \  
@@ -724,9 +723,10 @@ The combined data is stored in the PCA slot of the "OMICs" object.
 \  
 
 ```{r eval = TRUE}
-integrate_variables(Assays = c("H2az_Cell_wise","H3k4me1_Cell_wise",
-"H3k9ac_Cell_wise"), name = "OMICsdata",
-groups = c("WE","RE", "NE", "IntE"), scale.unit = FALSE, graph = FALSE)
+integrate_variables(Assays = c("H2az_Cell_wise",
+    "H3k4me1_Cell_wise"), name = "OMICsdata",
+    groups = c("WE","RE", "NE", "IntE"),
+    scale.unit = FALSE, graph = FALSE)
 ```
 \  
 
@@ -929,7 +929,7 @@ column dimension of the assay having the least number of cell lines
 \  
 
 ```{r eval = TRUE}
-analyse_variables(name = "OMICsdata", Assay = c("H3k9ac_Cell_wise",
+analyse_variables(name = "OMICsdata", Assay = c(
 "H2az_Cell_wise","H3k4me1_Cell_wise"), 
 choice = 6)
 ```
