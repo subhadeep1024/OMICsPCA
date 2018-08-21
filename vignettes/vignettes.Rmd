@@ -43,7 +43,6 @@ library(rgl)
 library(cluster)
 library(fpc)
 library(magick)
-library(pdftools)
 library(clusterProfiler)
 library(org.Hs.eg.db)
 library(grDevices)
@@ -280,24 +279,6 @@ names(data_summary) <- c("Assay", "Assay\nType", "Number of\nCell lines",
 "Name of\ncell lines", "Experiment")
 ```
 
-```{r eval = FALSE, echo=FALSE, results='asis'}
-# for pdf
-knitr::kable(data_summary, longtable = TRUE, booktabs = TRUE,
-caption = "Summary of data sets", 
-align = 'c', format = "latex") %>% 
-kable_styling("bordered",full_width = FALSE, position = "center",
-latex_options = c("repeat_header","striped"),
-font_size = 10) %>%
-column_spec(1, bold = FALSE, border_right = FALSE,
-border_left = FALSE, width = "5em") %>%
-column_spec(2, bold = FALSE, border_right = FALSE,
-border_left = FALSE, width = "5em") %>%
-column_spec(3, border_right = FALSE, width = "4em") %>%
-column_spec(4, border_right = FALSE, width = "23em") %>%
-column_spec(5, border_right = FALSE, width = "5em")
-
-```
-
 ```{r,eval = TRUE, echo=FALSE, results='asis'}
 #for html
 knitr::kable(data_summary, caption = "Summary of data sets", align = 'c') %>% 
@@ -387,16 +368,6 @@ names(TSS_list)[1] <- c("GENCODE TSS ID")
 ```
 \  
 
-```{r eval = FALSE, echo = FALSE, results='asis'}
-# for pdf
-
-knitr::kable(Gm12878[1:5,], longtable = TRUE, booktabs = TRUE,
-caption = "Intensity of ChIP-seq peaks of H3k27ac in Gm12878 Cell line",
-align = 'c', format = "latex") %>% kable_styling("bordered", full_width = TRUE,
-position = "left", latex_options = c("repeat_header","striped"), font_size = 10)
-
-```
-
 ```{r, eval = TRUE, echo = FALSE, result = 'asis'}
 #for html
 
@@ -405,17 +376,6 @@ caption = "Intensity of ChIP-seq peaks of H3k27ac in Gm12878 Cell line",
 align = 'c') %>%  kable_styling("bordered",full_width = TRUE, position = "left")
 ```
 \  
-
-```{r eval = FALSE, echo = FALSE, results='asis'}
-# for pdf
-
-knitr::kable(annotation[1:5, 1:4], longtable = TRUE, booktabs = TRUE,
-caption = "annotation file of Human transcription start sites of assembly
-hg19 (`annofile`)", align = 'c', format = "latex") %>% 
-kable_styling("bordered", full_width = TRUE, position = "left",
-latex_options = c("repeat_header","striped"), font_size = 10)
-
-```
 
 ```{r, eval = TRUE, echo = FALSE, result = 'asis'}
 #for html
@@ -426,17 +386,6 @@ align = 'c') %>% kable_styling("bordered",full_width = TRUE,
 position = "left")
 ```
 \  
-
-```{r eval = FALSE, echo = FALSE, results = 'asis'}
-# for pdf
-
-knitr::kable(TSS_list[1:5,], longtable = TRUE, booktabs = TRUE,
-caption = "names of the human TSSs of assembly hg19 (`annolist`)",
-align = 'c', format = "latex", col.names = "GENCODE ID") %>% 
-kable_styling("bordered", full_width = TRUE, position = "left",
-latex_options = c("repeat_header","striped"), font_size = 10)
-
-```
 
 ```{r, eval = TRUE, echo = FALSE, result = 'asis'}
 #for html
@@ -628,16 +577,6 @@ data("CAGE_Cell_wise_v2")
 ```
 \  
 
-```{r eval = FALSE, echo = FALSE, results = 'asis'}
-# for pdf
-
-knitr::kable(CAGE_Cell_wise_v2[1:5,1:5], longtable = TRUE,
-booktabs = TRUE, align = 'c', format = "latex") %>% 
-kable_styling("bordered", full_width = TRUE,
-position = "center", latex_options = c("repeat_header",
-"striped"), font_size = 10)
-```
-
 ```{r, eval = TRUE, echo = FALSE, result = 'asis'}
 #for html
 
@@ -775,24 +714,6 @@ through the argument `choice`. This is a wrapper function on various
 functions and thus can take additional and non-conflicting arguments
 specific to them.
 \  
-
-```{r eval = FALSE, echo=FALSE, results='asis'}
-# for pdf
-data <- data.frame(choice = c("table","scatter","hist", "all"),
-functions = c(
-"cor {stats}",
-"pairs {graphics}",
-"ggplot,geom_histogram,facet_wrap{ggplot2}",
-"chart.Correlation {PerformanceAnalytics}"),
-output = c("correlation table","scatterplot of each pair",
-"histogram of each column","all of the above together"))
-
-knitr::kable(data, longtable = TRUE, booktabs = TRUE,
-caption = "Summary of choices", align = 'c',
-format = "latex") %>% kable_styling("bordered",full_width = TRUE,
-position = "center", latex_options = c("repeat_header","striped"),
-font_size = 10)
-```
 
 ```{r, eval = TRUE,echo=FALSE, results='asis'}
 #for html
@@ -998,20 +919,6 @@ to select columns/variables/cell lines satisfying some condition.).
 use `?` followed by the function name listed in the above table to 
 explore more options available for each choice of "analyse_variables()".
 \  
-
-```{r, echo=FALSE, eval = FALSE, results='asis'}
-# for pdf
-knitr::kable(choice_table, longtable = TRUE, booktabs = TRUE,
-caption = "available choices", align = 'c', format = "latex") %>%
-kable_styling(full_width = FALSE, position = "center",
-latex_options = c("repeat_header","striped"), font_size = 10) %>%
-column_spec(1, width = "1em") %>%
-column_spec(2, width = "18em") %>%
-column_spec(3, width = "8em") %>%
-column_spec(4, width = "5em") %>%
-column_spec(5, width = "6em") %>%
-column_spec(6, width = "5em")
-```
 
 ```{r, echo=FALSE, results='asis'}
 # for html
