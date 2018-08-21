@@ -42,7 +42,7 @@ library(knitr)
 library(rgl)
 library(cluster)
 library(fpc)
-library(magick)
+library(EBImage)
 library(clusterProfiler)
 library(org.Hs.eg.db)
 library(grDevices)
@@ -191,9 +191,9 @@ and their arguments
 \  
 
 ```{r echo = FALSE, message = FALSE}
-fc <- system.file("images/OMICsPCA.pdf", package = "OMICsPCAdata")
-image <- image_read_pdf(fc)
-print(image)
+fc <- system.file("images/OMICsPCA.png", package = "OMICsPCAdata")
+image <- readImage(fc)
+display(image)
 ```
 \  
 
