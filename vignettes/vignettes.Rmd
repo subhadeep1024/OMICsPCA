@@ -47,7 +47,6 @@ library(pdftools)
 library(clusterProfiler)
 library(org.Hs.eg.db)
 library(grDevices)
-library(rmarkdown)
 ```
 
 ```{r setup, include = FALSE}
@@ -220,7 +219,7 @@ Assay = c(
 "H3k4me1" ,"H3k4me2","H3k27ac", "H3k27me3" ,
 "H3k79me2" ,"H4k20me1","DNase hypersensitivity"),
 
-Type_of_Assay = c("sequence of Transcription start sites",
+Type_of_Assay = c("Location of tag clusters",
 "location of Histone modification peaks",
 "location of Histone modification peaks",
 "location of Histone modification peaks",
@@ -273,7 +272,7 @@ Type_of_data = c(
 "ChIP-seq",
 "ChIP-seq",
 "ChIP-seq",
-"ChIP-seq"
+"DNaseI hypersensitivity"
 
 )
 )
