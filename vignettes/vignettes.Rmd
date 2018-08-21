@@ -44,7 +44,6 @@ library(rgl)
 library(cluster)
 library(fpc)
 library(clusterProfiler)
-library(org.Hs.eg.db)
 library(grDevices)
 ```
 
@@ -1017,7 +1016,7 @@ We can do various analysis with the gene name or id. Here is
 an example:
 \  
 
-```{r}
+```{r eval = FALSE}
 
 # find GO annotation 
 
