@@ -379,7 +379,12 @@ directly read them.
 \  
 
 ```{r echo = TRUE}
+### importing datasets from OMICsPCAdata package
+
 library(OMICsPCAdata)
+datalist <- data(package = "OMICsPCAdata")
+datanames <- datalist$results[,3]
+data(list = datanames)
 
 # creating an object of class "OMICs" using the constructor
 #function OMICS()
@@ -387,7 +392,6 @@ library(OMICsPCAdata)
 OMICsdata <- OMICs()
 
 str(OMICsdata)
-
 
 ### reading data into OMICsdata object
 InputOMICs(name = "OMICsdata",
