@@ -1,18 +1,18 @@
 Package: OMICsPCA
 Type: Package
 Title: An R package for quantitative integration and analysis of multiple omics assays from heterogeneous samples
-Version: 0.99.9
+Version: 0.99.10
 Date: 21/08/2018
 Author: Subhadeep Das [aut, cre],
         Dr. Sucheta Tripathy [ctb]
 Maintainer: Subhadeep Das <subhadeep1024@gmail.com>
-Depends: R (>= 3.5.0)
+Depends: R (>= 3.5.0), OMICsPCAdata
 Suggests: knitr, RUnit, BiocGenerics
 Description: OMICsPCA is an analysis pipeline designed to integrate multi OMICs experiments done on various subjects (e.g. Cell lines, individuals), treatments (e.g. disease/control) or time points and to analyse such integrated data from various various angles and perspectives. In it's core OMICsPCA uses Principal Component Analysis (PCA) to integrate multiomics experiments from various sources and thus has ability to over data insufficiency issues by using the ingegrated data as representatives. OMICsPCA can be used in various application including analysis of overall distribution of OMICs assays across various samples /individuals /time points; grouping assays by user-defined conditions; identification of source of variation, similarity/dissimilarity between assays, variables or individuals.
 License: GPL-3
 Encoding: UTF-8
-biocViews:  MultipleComparison, PrincipalComponent, DataRepresentation, Workflow, Visualization, DimensionReduction, Clustering,  BiologicalQuestion, EpigeneticsWorkflow, Transcription, GeneticVariability, GUI,  BiomedicalInformatics, Epigenetics,  FunctionalGenomics, SingleCell 
-Imports: HelloRanges, fpc, stats, pdftools, methods, grDevices, utils,clValid, NbClust, cowplot, OMICsPCAdata, rmarkdown, kableExtra, rtracklayer, IRanges, GenomeInfoDb, reshape2, ggplot2, factoextra, rgl, corrplot, MASS, graphics, FactoMineR, PerformanceAnalytics, tidyr, data.table, cluster, magick
+biocViews:  MultipleComparison,  PrincipalComponent, DataRepresentation, Workflow, Visualization, DimensionReduction, Clustering,  BiologicalQuestion, EpigeneticsWorkflow, Transcription, GeneticVariability, GUI,  BiomedicalInformatics, Epigenetics,  FunctionalGenomics, SingleCell 
+Imports: HelloRanges, fpc, stats, MultiAssayExperiment, pdftools, methods, grDevices, utils,clValid, NbClust, cowplot, OMICsPCAdata, rmarkdown, kableExtra, rtracklayer, IRanges, GenomeInfoDb, reshape2, ggplot2, factoextra, rgl, corrplot, MASS, graphics, FactoMineR, PerformanceAnalytics, tidyr, data.table, cluster, magick
 VignetteBuilder: knitr
 LazyData: FALSE
 RoxygenNote: 6.0.1
