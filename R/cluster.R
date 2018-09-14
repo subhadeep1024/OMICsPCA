@@ -1,7 +1,7 @@
 cluster <- function(name, n = NULL, graph = NULL, choice,
 title = NULL, ...){
 
-    set.seed(123)
+# set.seed(123)
 cl <- p <- NULL
 #xdim = somdim[1]
 #ydim = somdim[2]
