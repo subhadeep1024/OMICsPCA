@@ -64,7 +64,8 @@ plot_integrated_density_3D <- function(name, PC1 = 1,
 
   col1 <- rainbow(length(bivn.kde$z))[rank(bivn.kde$z)]
 
-  main = paste("Density plot of integrated assays on PC", PC1,"and",PC2, sep = " ")
+  main = paste("Density plot of integrated assays on PC",
+  PC1,"and",PC2, sep = " ")
 
   labx = paste("PC",PC1)
 
