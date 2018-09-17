@@ -116,7 +116,7 @@ analyse_variables <- function(name, Assay, choice, title = NULL,
              guides(fill=guide_colorbar("percentage"))
 
 
-           ############ barplot##############################################
+           ############ barplot##################################
            colsums <- as.data.frame(colSums(mydata[,-ncol(mydata)]))
            colsums <- transform(colsums, name = rownames(colsums))
            names(colsums)[1] <- "y"
@@ -139,7 +139,7 @@ analyse_variables <- function(name, Assay, choice, title = NULL,
                                         color="black")
              )
 
-           ############ both plot together#######################################
+           ############ both plot together########################
            both <- plot_grid(barplot, heatmap, align = "v",
                              nrow = 2, rel_heights=c(1/3,2/3), axis="l")
 
