@@ -18,7 +18,8 @@ groupinfo = NULL, ...){
     factor_value <- selectedassays[[Assay]]
 
     for(i in seq(from = 1, to = length(groups))){
-      tmp1[[i]] <- rownames(groupinfo[groupinfo$group == groups[i],, drop=FALSE])
+      tmp1[[i]] <- rownames(
+      groupinfo[groupinfo$group == groups[i],, drop=FALSE])
 
       subset <- c(subset, tmp1[[i]])
     }
