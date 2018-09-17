@@ -71,7 +71,8 @@ switch(choice,
 
          p <- ggplot(d, aes(x=variable, y = value))+geom_boxplot(
            position = position_dodge(width=1),aes(
-             fill=as.factor(no_of_factors)))+facet_wrap(~variable, scales = "free")
+             fill=as.factor(no_of_factors)))+facet_wrap(~variable,
+             scales = "free")
 
          p <- p+xlab("Number of factors")+ylab(
            "percentage of cell types")+ggtitle(title)+theme(
