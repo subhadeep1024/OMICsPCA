@@ -47,10 +47,10 @@ Subhadeep Das <subhadeep1024@gmail.com>
 }
 \examples{
 
-data(MultiAssay)
+data(multi_assay)
 data(groupinfo_ext)
 
-groupinfo <- create_group(name = MultiAssay,
+groupinfo <- create_group(name = multi_assay,
 group_names = c("WE","RE","NE","IntE"),
 grouping_factor = "CAGE",
 comparison = c(">=","\%in\%","==","\%in\%"),

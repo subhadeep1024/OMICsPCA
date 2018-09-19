@@ -62,10 +62,10 @@ Subhadeep Das <subhadeep1024@gmail.com>
 
 \examples{
 
-data(MultiAssay)
+data(multi_assay)
 data(groupinfo_ext)
 
-descriptor(name = MultiAssay,
+descriptor(name = multi_assay,
 factors = c(
 "H2az","H3k9ac","H3k4me1"),
 groups = c("WE","RE","IntE","NE"),

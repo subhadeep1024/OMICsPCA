@@ -40,10 +40,10 @@ Subhadeep Das
 
 \examples{
 
-data(MultiAssay)
+data(multi_assay)
 data(clustered_data)
 
-bp <- cluster_boxplot(name = MultiAssay,
+bp <- cluster_boxplot(name = multi_assay,
 Assay = "H2az", clusterobject = clustered_data,
 clustercolumn = 5)
 

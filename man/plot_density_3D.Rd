@@ -66,11 +66,11 @@ Displays 3D density plots of PCs
 }
 \examples{
 
-data(MultiAssay)
+data(multi_assay)
 data(groupinfo_ext)
 
 PCAlist <- integrate_variables(Assays = c("H2az"),
-name = MultiAssay,
+name = multi_assay,
 groups = c("WE","RE"), groupinfo = groupinfo_ext,
 scale.unit = FALSE, graph = FALSE)
 

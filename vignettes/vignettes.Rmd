@@ -189,8 +189,8 @@ and their arguments
 \  
 
 ```{r echo = FALSE, message = FALSE}
-fc <- system.file("extdata/OMICsPCA.pdf", package = "OMICsPCAdata")
-image <- image_read_pdf(fc)
+fc <- system.file("extdata/OMICsPCA.png", package = "OMICsPCAdata")
+image <- image_read(fc)
 print(image)
 ```
 \  

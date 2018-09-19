@@ -118,7 +118,7 @@ Subhadeep Das
 
 \examples{
 
-data(MultiAssay)
+data(multi_assay)
 data(groupinfo_ext)
 
 exclude <- list(0,c(1,9))
@@ -126,7 +126,7 @@ exclude <- list(0,c(1,9))
 int_PCA <- integrate_pca(Assays = c("H2az",
 "H3k9ac"),
 groupinfo = groupinfo,
-name = MultiAssay, mergetype = 2,
+name = multi_assay, mergetype = 2,
 exclude = exclude, graph = FALSE)
 
 name = int_PCA$int_PCA
