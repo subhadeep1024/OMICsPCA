@@ -202,11 +202,11 @@ print(image)
 In the following example, we run our analyses on a subset of 3 epigenetic
 Assays and one expression assay. All the data are publicly available
 at **ENCODE** and **ROADMAP epigenomics project** portal. The data is 
-stored in the **MultiAssayExperiment** object named **MUltiAssay**, which
+stored in the **MultiAssayExperiment** object named **multi_assay**, which
 is stored in the supporting data package **OMICsPCAdata**.
 
 More detailed description of the datasets are provided at the man
-page of **MultiAssay**, which can be accessed by `?MultiAssay`
+page of **multi_assay**, which can be accessed by `?multi_assay`
 
 
 \  
@@ -394,7 +394,7 @@ demoMultiAssay <- MultiAssayExperiment(experiments = assaylist)
 \  
 
 For ease of analysis, we compiled some preloaded data into
-an **MultiAssayExperiment** object named **MultiAssay**.
+an **MultiAssayExperiment** object named **multi_assay**.
 
 ## Subsetting into groups
 
@@ -429,7 +429,7 @@ be done
 \  
 
 ```{r echo = TRUE}
-groupinfo <- create_group(name = MultiAssay, group_names = c("WE" ,
+groupinfo <- create_group(name = multi_assay, group_names = c("WE" ,
 "RE" ,"NE" ,"IntE"),
 grouping_factor = "CAGE",
 comparison = c(">=" ,"%in%" ,"==" ,"%in%"),
@@ -447,7 +447,7 @@ The CAGE data frame looks like this:
 
 ```{r, eval = TRUE, echo = FALSE, result = 'asis'}
 #for html
-knitr::kable(assays(MultiAssay)[["CAGE"]][1:5,1:5], align = 'c') %>% 
+knitr::kable(assays(multi_assay)[["CAGE"]][1:5,1:5], align = 'c') %>% 
 kable_styling("bordered",full_width = TRUE, position = "center")
 ```
 \  
@@ -498,7 +498,7 @@ created by "create_group()"
 \  
 
 ```{r}
-descriptor(name = MultiAssay,
+descriptor(name = multi_assay,
 factors = c(
 "H2az",
 "H3k4me1","H3k9ac"),
@@ -527,7 +527,7 @@ Assays/factors/modalities supplied through `factors`.
 \  
 
 ```{r}
-descriptor(name = MultiAssay,
+descriptor(name = multi_assay,
 factors = c("H2az",
 "H3k4me1","H3k9ac"),
 groups = c("WE","RE"),
@@ -574,7 +574,7 @@ knitr::kable(data, caption = "Summary of choices", align = 'c') %>%
 
 ```{r eval = TRUE, echo = TRUE}
 groups <- c("WE")
-chart_correlation(name = MultiAssay, Assay = "H2az",
+chart_correlation(name = multi_assay, Assay = "H2az",
 groups = "WE", choice = "scatter", groupinfo = groupinfo)
 ```
 \  
@@ -588,7 +588,7 @@ by `choice` = table. The slight difference in Hepg2 is visible here also.
 \  
 
 ```{r eval = TRUE, echo = TRUE}
-chart_correlation(name = MultiAssay,
+chart_correlation(name = multi_assay,
 Assay = "H2az",
 groups = "WE", choice = "table",
 groupinfo = groupinfo)
@@ -601,7 +601,7 @@ This indicates that most of the "WE" in Hepg2 do not have H2az marks on them.
 \  
 
 ```{r}
-chart_correlation(name = MultiAssay, Assay = "H2az",
+chart_correlation(name = multi_assay, Assay = "H2az",
 groups = "WE", choice = "hist", bins = 10,
 groupinfo = groupinfo)
 ```
@@ -611,7 +611,7 @@ All the above 3 plots can be plotted in a single plot
 \  
 
 ```{r}
-chart_correlation(name = MultiAssay, Assay = "H2az",
+chart_correlation(name = multi_assay, Assay = "H2az",
 groups = "WE", choice = "all",
 groupinfo = groupinfo)
 ```
@@ -655,7 +655,7 @@ This function returns a list containing the PCA results.
 
 ```{r eval = TRUE}
 PCAlist <- integrate_variables(Assays = c("H2az","H3k4me1",
-"H3k9ac"), name = MultiAssay,
+"H3k9ac"), name = multi_assay,
 groups = c("WE","RE", "NE", "IntE"), groupinfo = groupinfo,
 scale.unit = FALSE, graph = FALSE)
 ```
@@ -1154,7 +1154,7 @@ The type of merging the assays should be entered by the argument
 int_PCA <- integrate_pca(Assays = c("H2az",
 "H3k9ac"),
 groupinfo = groupinfo,
-name = MultiAssay, mergetype = 2,
+name = multi_assay, mergetype = 2,
 exclude = exclude, graph = FALSE)
 ```
 \  
@@ -1577,7 +1577,7 @@ let's explore the clusters more
 \  
 
 ```{r}
-bp <- cluster_boxplot(name = MultiAssay,
+bp <- cluster_boxplot(name = multi_assay,
 Assay = "H2az", clusterobject = clustered_data,
 clustercolumn = 5)
 
