@@ -181,20 +181,7 @@ theoretical data or vice-versa. Such kind of multivariate analyses
 is useful in identification of similar cell lines or assays prior 
 to the integration process. In this vignette, we show an example 
 of the entire analysis process done on human transcription start
-sites. 
-\  
-
-Here is a flowchart of the overall functionality of the functions of OMICsPCA
-and their arguments
-\  
-
-```{r echo = FALSE, message = FALSE}
-fc <- system.file("extdata/OMICsPCA.png", package = "OMICsPCAdata")
-image <- image_read(fc)
-print(image)
-```
-\  
-
+sites.
 \  
 
 # DATA
