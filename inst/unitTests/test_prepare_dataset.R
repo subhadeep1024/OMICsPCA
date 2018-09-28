@@ -1,4 +1,3 @@
-library(OMICsPCAdata)
 
 anno <- system.file("extdata/annotation2/TSS_groups.bed",
                     package = "OMICsPCAdata")
