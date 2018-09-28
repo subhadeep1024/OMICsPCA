@@ -47,8 +47,6 @@ Subhadeep Das <subhadeep1024@gmail.com>
 }
 \examples{
 
-data(multi_assay)
-data(groupinfo_ext)
 
 groupinfo <- create_group(name = multi_assay,
 group_names = c("WE","RE","NE","IntE"),

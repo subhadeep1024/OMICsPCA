@@ -62,9 +62,6 @@ Subhadeep Das <subhadeep1024@gmail.com>
 }
 \examples{
 
-data(multi_assay)
-data(groupinfo_ext)
-
 exclude <- list(0,c(1,9))
 
 int_PCA <- integrate_pca(Assays = c("H2az",

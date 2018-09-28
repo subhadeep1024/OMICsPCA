@@ -48,8 +48,6 @@ Subhadeep Das <subhadeep1024@gmail.com>
 
 \examples{
 
-data(multi_assay)
-data(groupinfo_ext)
 
 PCAlist <- integrate_variables(Assays = c("H2az","H3k4me1",
 "H3k9ac"), name = multi_assay,

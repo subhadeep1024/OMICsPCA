@@ -40,9 +40,6 @@ Subhadeep Das
 
 \examples{
 
-data(multi_assay)
-data(groupinfo_ext)
-
 x <- extract_assay(name = multi_assay, Assay = "H2az",
 groups = c("WE","RE"), groupinfo = groupinfo_ext)
 

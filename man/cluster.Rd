@@ -69,8 +69,6 @@ Subhadeep Das
 
 \examples{
 
-data(multi_assay)
-data(groupinfo_ext)
 
 exclude <- list(0,c(1,9))
 
