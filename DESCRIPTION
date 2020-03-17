@@ -1,7 +1,7 @@
 Package: OMICsPCA
 Type: Package
 Title: An R package for quantitative integration and analysis of multiple omics assays from heterogeneous samples
-Version: 0.99.18
+Version: 0.99.19
 Date: 21/08/2018
 Author: Subhadeep Das [aut, cre],
         Dr. Sucheta Tripathy [ctb]
