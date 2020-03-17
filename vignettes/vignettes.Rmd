@@ -1441,7 +1441,7 @@ The parameters of "clvalid" and "NbClust" are passed through the
 "NbClust" and "clvalid" and thus should be chosen carefully.
 \  
 
-```{r eval = TRUE}
+```{r eval = FALSE}
 
 #### Using "clValid" ####
 
